@@ -1,0 +1,216 @@
+ * {
+   --radius: 2ch;
+   --small-gap: 1vmin;
+   --large-gap: 1vmax;
+   --large-padding: 1vmax;
+   --small-padding: 1vmin;
+   --font-size-regular: clamp(1rem, 2vmax, 2rem);
+   --font-size-medium: clamp(1rem, 3vw + 1rem, 8rem);
+ }
+
+ body {
+   margin: 0;
+   display: flex;
+   color: #111;
+   gap: var(--large-gap);
+   font-family: sans-serif;
+   flex-flow: column nowrap;
+   background-color: #fbf8ef;
+   padding: var(--small-padding);
+   min-height: fit-content;
+ }
+
+ input[type="range"],
+ input[type="range"]::-webkit-slider-runnable-track,
+ input[type="range"]::-webkit-slider-thumb {
+   -webkit-appearance: none;
+ }
+
+ input[type="range"]::-webkit-slider-runnable-track,
+ input[type="range"]::-webkit-slider-thumb {
+   height: var(--font-size-regular);
+ }
+
+ input[type="range"] {
+   background-color: #a6cbd7;
+   border-radius: var(--radius);
+ }
+
+ input[type="range"]::-webkit-slider-thumb {
+   width: var(--font-size-regular);
+   border-radius: 2ch;
+   background-color: #111;
+ }
+
+ input[type="range"]::-webkit-slider-thumb:hover {
+   background-color: #ee977f;
+ }
+
+ button {
+   border: none;
+   color: #111;
+   flex: 2 2 100%;
+   font-size: var(--font-size-regular);
+   border-radius: var(--radius);
+   padding: var(--large-padding);
+   background-color: #e6e5e6;
+ }
+
+ button:hover {
+   outline: 1px solid #ee977f;
+ }
+
+ footer {
+  color: #4a4a4a;
+  padding-top: 1em;
+  padding-bottom: 1em; 
+  font-size: var(--font-size-regular);
+ }
+
+ aside {
+  display: grid;
+  padding-bottom: var(--large-padding);
+  row-gap: var(--large-padding);
+ }
+
+ a {
+  color: inherit; 
+  text-decoration: none;
+  font-size: var(--font-size-regular);
+  border-bottom: 1px solid #111;
+ }
+
+ a:hover {
+  color: #ee977f;
+  border-bottom: 1px solid #ee977f;
+ }
+
+ #page-header {
+   padding: 0;
+   width: 100%;
+   display: flex;
+   flex-flow: row nowrap;
+   gap: var(--large-gap);
+   padding-bottom: var(--large-padding);
+ }
+
+ #page-title {
+   margin: 0;
+   flex: 4 2 100%;
+   line-height: 0.9em;
+   word-wrap: break-word;
+   padding-top: var(--large-padding);
+   padding-bottom: var(--large-padding);
+   font-size: clamp(2rem, 2vmax + 1rem, 4rem);
+ }
+
+ .puzzle-controls-container {
+   display: flex;
+   flex-flow: row nowrap;
+   gap: var(--small-gap);
+ }
+
+ .puzzle-control {
+   display: flex;
+   flex-flow: column nowrap;
+   flex: 2 2 100%;
+   padding-bottom: 0;
+   background-color: #e6e5e6;
+   border-radius: var(--radius);
+   padding: var(--large-padding);
+   justify-content: space-between;
+ }
+
+ #timer-container {
+   text-align: right;
+ }
+
+ #puzzle-canvas {
+   width: 100%;
+   aspect-ratio: 1/1;
+   background-color: #e6e5e6;
+   border-radius: var(--radius);
+   margin-bottom: var(--large-padding);
+ }
+
+ #puzzle-title-container {
+   width: 100%;
+   display: grid;
+   align-content: center;
+   justify-content: center;
+   background-color: #ee977f;
+   border-radius: var(--radius);
+ }
+
+ #puzzle-title {
+   margin: 0;
+   color: #111;
+   text-align: center;
+   padding: var(--large-padding);
+   font-size: var(--font-size-regular);
+ }
+
+ #puzzle-start {
+   background-color: #accfbf;
+ }
+
+ #timer {
+   margin: 0;
+   margin-block: 0;
+   color: #111;
+   line-height: 1em;
+   vertical-align: bottom;
+   font-size: var(--font-size-medium);
+ }
+
+ #level {
+   margin: 0;
+   padding: 0;
+   width: 100%;
+   height: var(--font-size-medium);
+ }
+
+ #puzzle-level,
+ #puzzle-timer {
+   margin: 0;
+   padding: 0;
+   color: #4a4a4a;
+   padding-bottom: clamp(1rem, 1.25em, 1.5rem);
+   font-size: var(--font-size-regular);
+   padding-top: var(--large-padding);
+ }
+
+ #puzzle {
+   display: grid;
+   gap: var(--large-padding);
+ }
+
+ @media screen and (min-width: 1200px) {
+   #puzzle {
+     grid-template-columns: repeat(4, 1fr);
+     grid-template-rows: max-content;
+   }
+
+   #puzzle-canvas {
+     grid-area: 1 / 1 / auto / 3;
+   }
+
+   aside {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    grid-area: 1 / 3 / 1 / 5;
+   }
+
+   #puzzle-title-container {
+     grid-area: 1 / 1 / 2 / 7;
+     max-height: fit-content;
+   }
+
+   #puzzle-control-misc {
+     grid-area: 2 / 1 / 4 / 7;
+   }
+
+   #puzzle-control-buttons {
+     grid-area: 4 / 1 / 5 / 7;
+   }
+ }
