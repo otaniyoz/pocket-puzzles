@@ -23,6 +23,7 @@ window.onload = () => {
   let tileWidth;
   let tileHeight;
   let gameIdx = 0;
+  let frameIdx = 0;
   let gameTime = 0;
   let diffValue = 0;
   let cols = (diffValue + 1) * 2;
@@ -90,9 +91,11 @@ window.onload = () => {
       game = new MemoryGame();
     }
     game.setupGame();
-    animationInterval(1000, timerController.signal, () => {
+    animationInterval(1000 / 60, timerController.signal, () => {
       draw();
-      timer.textContent = `${gameTime++}`;
+      frameIdx++;
+      if (frameIdx % 60 === 0) gameTime++;
+      timer.textContent = `${gameTime}`;
     });
   }
 
