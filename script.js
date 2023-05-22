@@ -23,28 +23,19 @@ window.onload = () => {
   let tileWidth;
   let tileHeight;
   let gameIdx = 0;
-  let frameIdx = 0;
   let gameTime = 0;
   let diffValue = 0;
   let cols = (diffValue + 1) * 2;
   let rows = (diffValue + 1) * 2;
 
   function setSize() {
-    // a hack to make canvas look better:
-    // get current device pixel ratio and the size of the canvas.
-    const scale = window.devicePixelRatio;
-    const rect = canvas.getBoundingClientRect();
     // scale canvas dimensions.
-    canvas.width = Math.floor(rect.width * scale);
-    canvas.height = Math.floor(rect.height * scale);
-    canvas.height = canvas.width;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
     buffer.width = canvas.width;
     buffer.height = canvas.height;
     W = canvas.width;
     H = canvas.height;
-    // set context scale.
-    ctx.scale(scale, scale);
-    bCtx.scale(scale, scale);
   }
   addEventListener("resize", () => setSize());
   setSize();
@@ -99,12 +90,9 @@ window.onload = () => {
       game = new MemoryGame();
     }
     game.setupGame();
-    // limit animation to 30fps.
-    animationInterval(1000 / 30, timerController.signal, () => {
+    animationInterval(1000, timerController.signal, () => {
       draw();
-      frameIdx++;
-      if (frameIdx % 30 === 0) gameTime += 1;
-      timer.textContent = `${gameTime}`;
+      timer.textContent = `${gameTime++}`;
     });
   }
 
