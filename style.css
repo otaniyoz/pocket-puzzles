@@ -130,6 +130,7 @@
    aspect-ratio: 1/1;
    background-color: #e6e5e6;
    border-radius: var(--radius);
+   border: 1px solid rgba(1, 1, 1, 0.5);
    margin-bottom: var(--large-padding);
  }
 
