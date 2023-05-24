@@ -238,8 +238,8 @@ a:hover {
     background-color: #b1705a;
   }
   
-  #puzzle-title {
-    color: #1a1a1a;
+  input[type="range"] {
+    background-color: #8ca9b5;
   }
   
   footer,
