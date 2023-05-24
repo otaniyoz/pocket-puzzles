@@ -221,8 +221,19 @@ a:hover {
 }
 
 @media (prefers-color-scheme: dark) {
-  body {
+  body,
+  button {
     color: #fbf8ef;
-    background-color: #111;
+  }
+  
+  button 
+  #puzzle-canvas {
+    background-color: #414141;
+  }
+  
+  body,
+  #puzzle-title,
+  input[type="range"]::-webkit-slider-thumb {
+    background-color: #1a1a1a;
   }
 }
