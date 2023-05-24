@@ -223,6 +223,7 @@ a:hover {
 @media (prefers-color-scheme: dark) {
   body,
   #timer,
+  #puzzle-title,
   button {
     color: #fbf8ef;
   }
@@ -234,7 +235,6 @@ a:hover {
   }
   
   #puzzle-title-container {
-    color: #fbf8ef;
     background-color: #b1705a;
   }
   
@@ -243,6 +243,8 @@ a:hover {
   }
   
   footer,
+  #puzzle-level,
+  #puzzle-timer,
   .puzzle-control {
     color: #bfbfbf;
   }
