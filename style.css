@@ -257,4 +257,8 @@ a:hover {
   input[type="range"]::-webkit-slider-thumb {
     background-color: #1a1a1a;
   }
+  
+  a {
+    border-bottom: 1px solid #bfbfbf;
+  }
 }
