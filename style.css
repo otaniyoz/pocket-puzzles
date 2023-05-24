@@ -8,6 +8,10 @@
    --font-size-medium: clamp(1rem, 3vw + 1rem, 8rem);
  }
 
+ html {
+   color-scheme: light dark;
+ }
+
  body {
    margin: 0;
    display: flex;
