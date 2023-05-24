@@ -222,17 +222,36 @@ a:hover {
 
 @media (prefers-color-scheme: dark) {
   body,
+  #timer,
   button {
     color: #fbf8ef;
   }
   
-  button 
+  button,
+  .puzzle-control,
   #puzzle-canvas {
-    background-color: #414141;
+    background-color: #313131;
+  }
+  
+  #puzzle-title-container {
+    color: #fbf8ef;
+    background-color: #b1705a;
+  }
+  
+  #puzzle-title {
+    color: #1a1a1a;
+  }
+  
+  footer,
+  .puzzle-control {
+    color: #bfbfbf;
+  }
+  
+  #puzzle-start {
+    background-color: #516f62;
   }
   
   body,
-  #puzzle-title,
   input[type="range"]::-webkit-slider-thumb {
     background-color: #1a1a1a;
   }
