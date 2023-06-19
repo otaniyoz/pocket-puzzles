@@ -64,13 +64,6 @@ button:hover {
   outline: 1px solid #ee977f;
 }
 
-footer {
-  color: #4a4a4a;
-  padding-top: 1em;
-  padding-bottom: 1em; 
-  font-size: var(--font-size-regular);
-}
-
 aside {
   display: grid;
   padding-bottom: var(--large-padding);
@@ -87,6 +80,13 @@ a {
 a:hover {
   color: #ee977f;
   border-bottom: 1px solid #ee977f;
+}
+
+#about {
+  color: #4a4a4a;
+  padding-top: 1em;
+  padding-bottom: 1em; 
+  font-size: var(--font-size-regular);
 }
 
 #page-header {
@@ -191,6 +191,10 @@ a:hover {
 }
 
 @media screen and (min-width: 1200px) {
+  #about {
+    grid-area: 4 / 1 / 5 / 7;
+  }
+
   #puzzle {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: max-content;
@@ -202,7 +206,7 @@ a:hover {
 
   aside {
     grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(8, 1fr);
+    grid-template-rows: repeat(8, min(120px, 1fr));
     grid-area: 1 / 3 / 1 / 5;
   }
 
@@ -212,11 +216,11 @@ a:hover {
   }
 
   #puzzle-control-misc {
-    grid-area: 2 / 1 / 4 / 7;
+    grid-area: 2 / 1 / 3 / 7;
   }
 
   #puzzle-control-buttons {
-    grid-area: 4 / 1 / 5 / 7;
+    grid-area: 3 / 1 / 4 / 7;
   }
 }
 
