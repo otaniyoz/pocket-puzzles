@@ -2,7 +2,7 @@
 window.onload = () => {
   const puzzleTitles = ["Sliding tiles", "Memory tiles"];
 
-  const timer = document.getElementById("timer");
+  const counter = document.getElementById("counter");
   const diffSlider = document.getElementById("level");
   const puzzleTitle = document.getElementById("puzzle-title");
   const newGameButton = document.getElementById("puzzle-start");
@@ -15,7 +15,6 @@ window.onload = () => {
   const bCtx = buffer.getContext("2d", { alpha: "false" });
 
   let game;
-  let timerController;
   let board = [];
   let tiles = [];
   let W;
@@ -24,7 +23,7 @@ window.onload = () => {
   let tileHeight;
   let gameIdx = 0;
   let frameIdx = 0;
-  let gameTime = 0;
+  let gameMoves = 0;
   let diffValue = 0;
   let cols = (diffValue + 1) * 2;
   let rows = (diffValue + 1) * 2;
@@ -38,39 +37,34 @@ window.onload = () => {
     W = canvas.width;
     H = canvas.height;
   }
-  addEventListener("resize", () => setSize());
+  addEventListener("resize", setSize);
   setSize();
 
-  newGameButton.addEventListener("pointerdown", () => {
-    start();
-  });
-  endGameButton.addEventListener("pointerdown", () => {
-    stop();
-  });
-  diffSlider.addEventListener("change", () => {
-    start();
-  });
+  newGameButton.addEventListener("pointerdown", startGame);
+  endGameButton.addEventListener("pointerdown", stopGame);
+  diffSlider.addEventListener("change", startGame);
   selectGameButton.addEventListener("pointerdown", () => {
     gameIdx += 1;
     if (gameIdx > 1) gameIdx = 0;
     puzzleTitle.textContent = puzzleTitles[gameIdx];
-    start();
+    startGame();
   });
 
   canvas.addEventListener("pointerdown", mousePress);
   function mousePress(event) {
     // do not register move if the game is not on.
-    if (!canvas || !game) return;
+    if (!canvas || !game || !game.isPlaying()) return;
     const rect = canvas.getBoundingClientRect();
     const scaleX = W / rect.width;
     const scaleY = H / rect.height;
     const i = Math.floor(((event.clientX - rect.left) * scaleX) / tileWidth);
     const j = Math.floor(((event.clientY - rect.top) * scaleY) / tileHeight);
-    game.makeMove(i, j);
+    gameMoves += game.makeMove(i, j);
+    counter.textContent = `${gameMoves}`;
   }
 
-  function start() {
-    if (game && game.isPlaying()) stop();
+  function startGame() {
+    if (game && game.isPlaying()) stopGame();
     ctx.clearRect(0, 0, W, H);
     bCtx.clearRect(0, 0, W, H);
     // these are essentially global variables
@@ -83,34 +77,30 @@ window.onload = () => {
     // reset game variables.
     board = [];
     tiles = [];
-    gameTime = 0;
-    timerController = new AbortController();
+    frameIdx = 0;
+    gameMoves = 0;
+    counter.textContent = `${gameMoves}`;
     if (gameIdx === 0) {
       game = new SlidePuzzle();
     } else if (gameIdx === 1) {
       game = new MemoryGame();
     }
-    game.setupGame();
-    animationInterval(1000 / 60, timerController.signal, () => {
-      draw();
-      frameIdx++;
-      if (frameIdx % 60 === 0) gameTime++;
-      timer.textContent = `${gameTime}`;
-    });
+    game.reset();
+    game.setup();
+    drawGame();
   }
 
-  function stop() {
-    if (!timerController) return;
-    if (game.endGame()) {
-      game.drawGame();
-      game.resetGame();
-      timerController.abort();
+  function stopGame() {
+    if (game && game.end()) {
+      game.draw();
     }
   }
 
-  function draw() {
-    game.drawGame();
-    if (!game.isPlaying()) stop();
+  function drawGame() {
+    game.draw();
+    frameIdx += 1 / 60;
+    if (!game.isPlaying()) stopGame();
+    window.requestAnimationFrame(drawGame);
   }
 
   function swap(i, j, arr) {
@@ -119,9 +109,9 @@ window.onload = () => {
     arr[j] = temp;
   }
 
+  // checks if two arrays are equal. if the second array
+  // is not passed, it checks against itself.
   function isArrEqual(arr1, arr2 = []) {
-    // checks if two arrays are equal  if the second array
-    // is not passed, it checks against itself.
     if (!arr2.length) arr2 = [...Array(arr1.length).keys()];
     if (arr1.length !== arr2.length) return;
     for (let i = 0; i < arr1.length - 1; i++)
@@ -129,40 +119,17 @@ window.onload = () => {
     return true;
   }
 
+  // draws a tile in the provided canvas "c",
+  // x-coordinate "x", y-coordinate "y", width "w", and height "h".
+  // if "fill" is true: the tile is filled
+  // if "stroke" is true: the tile has 0.5px border.
   function drawTile(c, x, y, w, h, fill = false, stroke = true) {
-    // draws a tile in the provided canvas "c",
-    // x-coordinate "x", y-coordinate "y", width "w", and height "h".
-    // if "fill" is true: the tile is filled
-    // if "stroke" is true: the tile has border.
     c.lineWidth = 1 / 2;
     c.fillStyle = c.strokeStyle = "rgba(1,1,1,0.5)";
     c.beginPath();
     fill ? c.fillRect(x, y, w, h) : c.rect(x, y, w, h);
     if (stroke) c.stroke();
     c.closePath();
-  }
-
-  // timer the right way by jake archibald for http203:
-  // https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95
-  function animationInterval(ms, signal, callback) {
-    const start = document.timeline
-      ? document.timeline.currentTime
-      : performance.now();
-    function frame(time) {
-      if (signal.aborted) return;
-      callback(time);
-      scheduleFrame(time);
-    }
-    function scheduleFrame(time) {
-      const elapsed = time - start;
-      const roundedElapsed = Math.round(elapsed / ms) * ms;
-      const targetNext = start + roundedElapsed + ms;
-      const delay = targetNext - performance.now();
-      window.setTimeout(() => {
-        window.requestAnimationFrame(frame);
-      }, delay);
-    }
-    scheduleFrame(start);
   }
 
   function getCurve(x, y, v, w, h) {
@@ -177,7 +144,7 @@ window.onload = () => {
     const points = [];
     for (let i = 0; i <= 360; i += 1 / 2) {
       points.push([x, y]);
-      const k = (97 * i * Math.PI) / 250;
+      const k = (97 * i * Math.PI / 180);
       const r = Math.sin(k * (v + 7));
       x += -5 * r * w * Math.cos(k);
       y += -5 * r * h * Math.sin(k);
@@ -265,9 +232,9 @@ window.onload = () => {
       }
     }
 
+    // checks if the move is valid: then returns an array of move
+    // coordinates, otherwise returns an empty array.
     _move(i, j, arr) {
-      // checks if the move is valid: then returns an array of move
-      // coordinates, otherwise returns an empty array.
       const blank = board.indexOf(-1);
       const blankCol = blank % cols;
       const blankRow = Math.floor(blank / rows);
@@ -281,8 +248,8 @@ window.onload = () => {
       return [];
     }
 
+    // shuffles the grid of tiles by making a random move.
     _shuffle(arr) {
-      // shuffle the grid of tiles by making a random move.
       const shuffleSequence = [];
       for (let i = 0; i < (diffValue + 1) * 1000; i++) {
         const r1 = Math.floor(Math.random() * cols);
@@ -293,19 +260,23 @@ window.onload = () => {
       return shuffleSequence;
     }
 
+    // makes the move if it's valid.
     makeMove(i, j) {
-      // if the move is valid, make the move.
       const m = this._move(i, j, board);
-      if (m.length) this.moves.push(m);
+      if (m.length) {
+        this.moves.push(m);
+        return 1;
+      }
+      return 0;
     }
 
-    resetGame() {
+    reset() {
       this.moves = [];
       this.particles = [];
       this.seenSeconds = [];
     }
 
-    setupGame() {
+    setup() {
       for (let idx = 0; idx < cols * rows; idx++) {
         const tile = new Map([
           ["index", idx],
@@ -324,7 +295,7 @@ window.onload = () => {
       this._drawTiles();
     }
 
-    endGame() {
+    end() {
       // at the end of the game make sure that the board is sorted
       // this is necessary when the user gives up.
       while (this.moves.length) {
@@ -340,7 +311,7 @@ window.onload = () => {
       return !isArrEqual(board);
     }
 
-    drawGame() {
+    draw() {
       ctx.clearRect(0, 0, W, H);
       this._drawTiles();
     }
@@ -354,15 +325,12 @@ window.onload = () => {
     }
 
     _drawPairs() {
-      // at each frame iterate over all tiles.
-      // if a tile is flipped, copy from buffer to canvas.
-      // if a tile is flipped and its pair is not flipped,
-      // reset both tiles to unflipped at "new" second.
       ctx.clearRect(0, 0, W, H);
       for (let idx = 0; idx < cols * rows; idx++) {
         const i = idx % cols;
         const j = Math.floor(idx / rows);
         drawTile(ctx, i * tileWidth, j * tileHeight, tileWidth, tileHeight);
+        // if a tile is flipped, copy from buffer to canvas.
         if (this.flipped[idx]) {
           ctx.drawImage(
             buffer,
@@ -376,7 +344,11 @@ window.onload = () => {
             tileHeight
           );
         }
-        if (!this.seenSeconds.includes(gameTime)) {
+        // if a tile is flipped and its pair is not flipped,
+        // reset both tiles to unflipped at a "new" third second.
+        // maybe not the best idea, but eh
+        const gameTime = Math.floor(frameIdx);
+        if (!this.seenSeconds.includes(gameTime) && gameTime % 4 === 0) {
           for (let [k, v] of this.pairs) {
             if (this.flipped[v[0]] !== this.flipped[v[1]]) {
               this.flipped[v[0]] = 0;
@@ -388,10 +360,14 @@ window.onload = () => {
       }
     }
 
+    // flips the tile at the given index.
     _move(i, j) {
-      // flip the tile at the given index.
       const idx = i + j * cols;
-      if (!this.flipped[idx]) this.flipped[idx] = 1;
+      if (!this.flipped[idx]) {
+        this.flipped[idx] = 1;
+        return true;
+      }
+      return false;
     }
 
     _shuffle(arr) {
@@ -403,18 +379,21 @@ window.onload = () => {
     }
 
     makeMove(i, j) {
-      this._move(i, j);
+      if (this._move(i, j)) {
+        return 1;  
+      }
+      return 0;
     }
 
-    resetGame() {
+    reset() {
       this.flipped = [];
       this.seenSeconds = [];
       this.pairs = new Map();
-      // we need to clear buffer canvas at reset.
+      // clear the canvas buffer at reset.
       bCtx.clearRect(0, 0, W, H);
     }
 
-    setupGame() {
+    setup() {
       // populate the board array with pairs then shuffle it.
       for (let idx = 0; idx < cols * rows; idx++) {
         const val = Math.floor(idx / 2);
@@ -437,7 +416,7 @@ window.onload = () => {
       this._drawPairs();
     }
 
-    endGame() {
+    end() {
       for (let i = 0; i < cols * rows; i++) this.flipped[i] = 1;
       return true;
     }
@@ -446,7 +425,7 @@ window.onload = () => {
       return this.flipped.includes(0) ? true : false;
     }
 
-    drawGame() {
+    draw() {
       this._drawPairs();
     }
   }

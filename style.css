@@ -125,7 +125,7 @@ a:hover {
   justify-content: space-between;
 }
 
-#timer-container {
+#counter-container {
   text-align: right;
 }
 
@@ -159,7 +159,7 @@ a:hover {
   background-color: #accfbf;
 }
 
-#timer {
+#counter {
   margin: 0;
   margin-block: 0;
   color: #111;
@@ -176,7 +176,7 @@ a:hover {
 }
 
 #puzzle-level,
-#puzzle-timer {
+#puzzle-counter {
   margin: 0;
   padding: 0;
   color: #4a4a4a;
@@ -226,7 +226,7 @@ a:hover {
 
 @media (prefers-color-scheme: dark) {
   body,
-  #timer,
+  #counter,
   #puzzle-title,
   button {
     color: #fbf8ef;
@@ -248,7 +248,7 @@ a:hover {
   
   footer,
   #puzzle-level,
-  #puzzle-timer,
+  #puzzle-counter,
   .puzzle-control {
     color: #bfbfbf;
   }
