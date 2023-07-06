@@ -17,9 +17,13 @@
     <main id="puzzle">
       <canvas id="puzzle-canvas"></canvas>
       <aside>
-        <div id="puzzle-title-container">
-          <p id="puzzle-title">Sliding tiles</p>
-        </div>
+        <fieldset id="puzzle-title-container">
+          <input id="sliding-tiles" type="radio" name="puzzle-title" value="0" checked />
+          <label for="sliding-tiles">Sliding tiles</label>
+
+          <input id="memory-tiles" type="radio" name="puzzle-title" value="1" />
+          <label for="memory-tiles">Memory tiles</label>
+        </fieldset>
         <div id="puzzle-control-misc" class="puzzle-controls-container">
           <div id="level-container" class="puzzle-control">
             <p id="puzzle-level">Difficulty</p>
@@ -32,7 +36,6 @@
         </div>
         <div id="puzzle-control-buttons" class="puzzle-controls-container">
           <button id="puzzle-end">Give up</button>
-          <button id="puzzle-select">Change puzzle</button>
           <button id="puzzle-start">Start</button>
         </div>
         <p id="about"><b>About</b>:

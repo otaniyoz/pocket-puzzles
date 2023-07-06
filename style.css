@@ -60,8 +60,40 @@ button {
   background-color: #e6e5e6;
 }
 
+label:hover,
 button:hover {
   outline: 1px solid #ee977f;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  border: none;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: var(--small-gap);
+  justify-content: space-between;
+}
+
+label {
+  border: none;
+  display: flex;
+  flex: 2 2 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-regular);
+  border-radius: var(--radius);
+  padding: var(--large-padding);
+  background-color: #e6e5e6;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:checked+label {
+  background-color: #ee977f;
 }
 
 aside {
@@ -71,7 +103,7 @@ aside {
 }
 
 a {
-  color: inherit; 
+  color: inherit;
   text-decoration: none;
   font-size: var(--font-size-regular);
   border-bottom: 1px solid #111;
@@ -85,7 +117,7 @@ a:hover {
 #about {
   color: #4a4a4a;
   padding-top: 1em;
-  padding-bottom: 1em; 
+  padding-bottom: 1em;
   font-size: var(--font-size-regular);
 }
 
@@ -136,23 +168,6 @@ a:hover {
   border-radius: var(--radius);
   border: 1px solid rgba(1, 1, 1, 0.5);
   margin-bottom: var(--large-padding);
-}
-
-#puzzle-title-container {
-  width: 100%;
-  display: grid;
-  align-content: center;
-  justify-content: center;
-  background-color: #ee977f;
-  border-radius: var(--radius);
-}
-
-#puzzle-title {
-  margin: 0;
-  color: #111;
-  text-align: center;
-  padding: var(--large-padding);
-  font-size: var(--font-size-regular);
 }
 
 #puzzle-start {
@@ -225,43 +240,58 @@ a:hover {
 }
 
 @media (prefers-color-scheme: dark) {
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background-color: #b1705a;
+  }
+
+  label:hover,
+  button:hover {
+    outline: 1px solid #b1705a;
+  }
+
+  a:hover {
+    color: #b1705a;
+    border-bottom: 1px solid #b1705a;
+  }
+
   body,
   #counter,
-  #puzzle-title,
+  label,
   button {
     color: #fbf8ef;
   }
-  
+
   button,
+  label,
   .puzzle-control,
   #puzzle-canvas {
     background-color: #313131;
   }
-  
-  #puzzle-title-container {
+
+  input[type="radio"]:checked+label {
     background-color: #b1705a;
   }
-  
+
   input[type="range"] {
     background-color: #8ca9b5;
   }
-  
+
   footer,
   #puzzle-level,
   #puzzle-counter,
   .puzzle-control {
     color: #bfbfbf;
   }
-  
+
   #puzzle-start {
     background-color: #516f62;
   }
-  
+
   body,
   input[type="range"]::-webkit-slider-thumb {
     background-color: #1a1a1a;
   }
-  
+
   a {
     border-bottom: 1px solid #bfbfbf;
   }

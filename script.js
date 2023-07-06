@@ -1,13 +1,9 @@
 "use strict";
 window.onload = () => {
-  const puzzleTitles = ["Sliding tiles", "Memory tiles"];
-
   const counter = document.getElementById("counter");
   const diffSlider = document.getElementById("level");
-  const puzzleTitle = document.getElementById("puzzle-title");
   const newGameButton = document.getElementById("puzzle-start");
   const endGameButton = document.getElementById("puzzle-end");
-  const selectGameButton = document.getElementById("puzzle-select");
 
   const canvas = document.getElementById("puzzle-canvas");
   const ctx = canvas.getContext("2d", { alpha: "false" });
@@ -21,7 +17,6 @@ window.onload = () => {
   let H;
   let tileWidth;
   let tileHeight;
-  let gameIdx = 0;
   let frameIdx = 0;
   let gameMoves = 0;
   let diffValue = 0;
@@ -43,12 +38,6 @@ window.onload = () => {
   newGameButton.addEventListener("pointerdown", startGame);
   endGameButton.addEventListener("pointerdown", stopGame);
   diffSlider.addEventListener("change", startGame);
-  selectGameButton.addEventListener("pointerdown", () => {
-    gameIdx += 1;
-    if (gameIdx > 1) gameIdx = 0;
-    puzzleTitle.textContent = puzzleTitles[gameIdx];
-    startGame();
-  });
 
   canvas.addEventListener("pointerdown", mousePress);
   function mousePress(event) {
@@ -80,6 +69,7 @@ window.onload = () => {
     frameIdx = 0;
     gameMoves = 0;
     counter.textContent = `${gameMoves}`;
+    const gameIdx = Number(document.querySelector("input[name='puzzle-title']:checked").value);
     if (gameIdx === 0) {
       game = new SlidePuzzle();
     } else if (gameIdx === 1) {
@@ -91,9 +81,7 @@ window.onload = () => {
   }
 
   function stopGame() {
-    if (game && game.end()) {
-      game.draw();
-    }
+    if (game && game.end()) game.draw();
   }
 
   function drawGame() {
@@ -109,8 +97,6 @@ window.onload = () => {
     arr[j] = temp;
   }
 
-  // checks if two arrays are equal. if the second array
-  // is not passed, it checks against itself.
   function isArrEqual(arr1, arr2 = []) {
     if (!arr2.length) arr2 = [...Array(arr1.length).keys()];
     if (arr1.length !== arr2.length) return;
