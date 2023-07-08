@@ -36,17 +36,25 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 input[type="range"] {
-  background-color: #a6cbd7;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: var(--font-size-medium);
   border-radius: var(--radius);
+  background-color: #a6cbd7;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   width: var(--font-size-regular);
-  border-radius: 2ch;
+  border-radius: var(--radius);
   background-color: #111;
 }
 
-input[type="range"]::-webkit-slider-thumb:hover {
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"]:checked+label {
   background-color: #ee977f;
 }
 
@@ -61,7 +69,9 @@ button {
 }
 
 label:hover,
-button:hover {
+button:hover,
+input[type="range"]::-webkit-slider-thumb:hover {
+  cursor: pointer;
   outline: 1px solid #ee977f;
 }
 
@@ -82,18 +92,11 @@ label {
   flex: 2 2 100%;
   align-items: center;
   justify-content: center;
+  text-align: center;
   font-size: var(--font-size-regular);
   border-radius: var(--radius);
   padding: var(--large-padding);
   background-color: #e6e5e6;
-}
-
-input[type="radio"] {
-  display: none;
-}
-
-input[type="radio"]:checked+label {
-  background-color: #ee977f;
 }
 
 aside {
@@ -133,6 +136,7 @@ a:hover {
 #page-title {
   margin: 0;
   flex: 4 2 100%;
+  user-select: none;
   line-height: 0.9em;
   word-wrap: break-word;
   padding-top: var(--large-padding);
@@ -166,7 +170,7 @@ a:hover {
   aspect-ratio: 1/1;
   background-color: #e6e5e6;
   border-radius: var(--radius);
-  border: 1px solid rgba(1, 1, 1, 0.5);
+  border: 1px solid rgb(74,74,74);
   margin-bottom: var(--large-padding);
 }
 
@@ -181,13 +185,6 @@ a:hover {
   line-height: 1em;
   vertical-align: bottom;
   font-size: var(--font-size-medium);
-}
-
-#level {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: var(--font-size-medium);
 }
 
 #puzzle-level,
@@ -240,13 +237,15 @@ a:hover {
 }
 
 @media (prefers-color-scheme: dark) {
-  input[type="range"]::-webkit-slider-thumb:hover {
-    background-color: #b1705a;
-  }
 
   label:hover,
-  button:hover {
+  button:hover,
+  input[type="range"]::-webkit-slider-thumb:hover {
     outline: 1px solid #b1705a;
+  }
+
+  a {
+    border-bottom: 1px solid #313131;
   }
 
   a:hover {
@@ -255,14 +254,14 @@ a:hover {
   }
 
   body,
-  #counter,
   label,
-  button {
+  button,
+  #counter {
     color: #fbf8ef;
   }
 
-  button,
   label,
+  button,
   .puzzle-control,
   #puzzle-canvas {
     background-color: #313131;
@@ -276,6 +275,11 @@ a:hover {
     background-color: #8ca9b5;
   }
 
+  body,
+  input[type="range"]::-webkit-slider-thumb {
+    background-color: #1a1a1a;
+  }
+
   footer,
   #puzzle-level,
   #puzzle-counter,
@@ -285,14 +289,5 @@ a:hover {
 
   #puzzle-start {
     background-color: #516f62;
-  }
-
-  body,
-  input[type="range"]::-webkit-slider-thumb {
-    background-color: #1a1a1a;
-  }
-
-  a {
-    border-bottom: 1px solid #bfbfbf;
   }
 }

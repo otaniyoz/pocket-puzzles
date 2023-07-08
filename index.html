@@ -19,10 +19,13 @@
       <aside>
         <fieldset id="puzzle-title-container">
           <input id="sliding-tiles" type="radio" name="puzzle-title" value="0" checked />
-          <label for="sliding-tiles">Sliding tiles</label>
+          <label for="sliding-tiles">Slide!</label>
 
-          <input id="memory-tiles" type="radio" name="puzzle-title" value="1" />
-          <label for="memory-tiles">Memory tiles</label>
+          <input id="pair-tiles" type="radio" name="puzzle-title" value="1" />
+          <label for="pair-tiles">Pairs</label>
+
+          <input id="that-tile" type="radio" name="puzzle-title" value="2" />
+          <label for="that-tile">That tile</label>
         </fieldset>
         <div id="puzzle-control-misc" class="puzzle-controls-container">
           <div id="level-container" class="puzzle-control">
@@ -38,8 +41,8 @@
           <button id="puzzle-end">Give up</button>
           <button id="puzzle-start">Start</button>
         </div>
-        <p id="about"><b>About</b>:
-          A collection of puzzles designed to fit in a pocket. You can
+        <p id="about">
+          This is a collection of puzzles designed to fit in a pocket. You can
           <a href="https://github.com/otaniyoz/pocket-puzzles" target="_blank">fork it on Github</a>
         </p>
       </aside>
