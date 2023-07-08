@@ -163,7 +163,7 @@ window.onload = () => {
         // reset both tiles to unflipped at a "new" third second.
         // maybe not the best idea, but eh
         const gameTime = Math.floor(frameIdx);
-        if (!this.seenSeconds.includes(gameTime) && gameTime % 4 === 0) {
+        if (!this.seenSeconds.includes(gameTime) && gameTime % 2 === 0) {
           for (let [k, v] of this.pairs) {
             if (this.flipped[v[0]] !== this.flipped[v[1]]) {
               this.flipped[v[0]] = 0;
