@@ -62,6 +62,7 @@ button {
   border: none;
   color: #111;
   flex: 2 2 100%;
+  font-family: sans-serif;
   font-size: var(--font-size-regular);
   border-radius: var(--radius);
   padding: var(--large-padding);
@@ -124,6 +125,11 @@ a:hover {
   font-size: var(--font-size-regular);
 }
 
+#warning {
+  color: #ee977f;
+  font-weight: bold;
+}
+
 #page-header {
   padding: 0;
   width: 100%;
@@ -170,7 +176,7 @@ a:hover {
   aspect-ratio: 1/1;
   background-color: #e6e5e6;
   border-radius: var(--radius);
-  border: 1px solid rgb(74,74,74);
+  border: 1px solid rgb(74, 74, 74);
   margin-bottom: var(--large-padding);
 }
 
@@ -237,6 +243,10 @@ a:hover {
 }
 
 @media (prefers-color-scheme: dark) {
+  #warning {
+    color: #b1705a;
+    font-weight: bold;
+  }
 
   label:hover,
   button:hover,

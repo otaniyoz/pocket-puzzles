@@ -1,51 +1,53 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <meta name="theme-color" content="#111">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
-    <link rel="icon" href="favicon.png">
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
-    <title>Pocket puzzles</title>
-  </head>
-  <body>
-    <header id="page-header">
-      <h3 id="page-title">Pocket puzzles</h3>
-    </header>
-    <main id="puzzle">
-      <canvas id="puzzle-canvas"></canvas>
-      <aside>
-        <fieldset id="puzzle-title-container">
-          <input id="sliding-tiles" type="radio" name="puzzle-title" value="0" checked />
-          <label for="sliding-tiles">Slide!</label>
 
-          <input id="pair-tiles" type="radio" name="puzzle-title" value="1" />
-          <label for="pair-tiles">Pairs</label>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#111">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+  <link rel="icon" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <title>Pocket puzzles</title>
+</head>
 
-          <input id="that-tile" type="radio" name="puzzle-title" value="2" />
-          <label for="that-tile">That tile</label>
-        </fieldset>
-        <div id="puzzle-control-misc" class="puzzle-controls-container">
-          <div id="level-container" class="puzzle-control">
-            <p id="puzzle-level">Difficulty</p>
-            <input id="level" type="range" min="0" max="4" step="2" value="0" />
-          </div>
-          <div id="counter-container" class="puzzle-control">
-            <p id="puzzle-counter">Moves</p>
-            <p id="counter">0</p>
-          </div>
+<body>
+  <header id="page-header">
+    <h3 id="page-title">Pocket puzzles</h3>
+  </header>
+  <main id="puzzle">
+    <canvas id="puzzle-canvas"></canvas>
+    <aside>
+      <fieldset id="puzzle-title-container">
+        <input id="sliding-tiles" type="radio" name="puzzle-title" value="0" checked />
+        <label for="sliding-tiles">Slide!</label>
+
+        <input id="pair-tiles" type="radio" name="puzzle-title" value="1" />
+        <label for="pair-tiles">Pairs</label>
+
+        <input id="that-tile" type="radio" name="puzzle-title" value="2" />
+        <label for="that-tile">That tile</label>
+      </fieldset>
+      <div id="puzzle-control-misc" class="puzzle-controls-container">
+        <div id="level-container" class="puzzle-control">
+          <p id="puzzle-level">Difficulty</p>
+          <input id="level" type="range" min="0" max="4" step="2" value="0" />
         </div>
-        <div id="puzzle-control-buttons" class="puzzle-controls-container">
-          <button id="puzzle-end">Give up</button>
-          <button id="puzzle-start">Start</button>
+        <div id="counter-container" class="puzzle-control">
+          <p id="puzzle-counter">Moves</p>
+          <p id="counter">0</p>
         </div>
-        <p id="about">
-          This is a collection of puzzles designed to fit in a pocket. You can
-          <a href="https://github.com/otaniyoz/pocket-puzzles" target="_blank">fork it on Github</a>
-        </p>
-      </aside>
-    </main>
-  </body>
+      </div>
+      <div id="puzzle-control-buttons" class="puzzle-controls-container">
+        <button id="puzzle-end">Give up</button>
+        <button id="puzzle-start">Start</button>
+      </div>
+      <p id="about">
+        <span id="warning">Be careful when playing ⁠‘⁠That tile⁠’ as the frames might begin firing painfuly fast.</span> Now that you’ve been warned: This is a collection of puzzles designed to fit in a pocket. You can <a href="https://github.com/otaniyoz/pocket-puzzles" target="_blank">fork it on Github</a>
+      </p>
+    </aside>
+  </main>
+</body>
+
 </html>

@@ -10,43 +10,18 @@ window.onload = () => {
 
     _drawTiles() {
       for (let idx = 0; idx < cols * rows; idx++) {
-        const i = idx % cols;
-        const j = Math.floor(idx / rows);
         const tile = board[idx];
+        const i = (idx % cols) * tileWidth;
+        const j = Math.floor(idx / rows) * tileHeight;
         if (tile === -1) {
-          drawTile(
-            ctx,
-            i * tileWidth,
-            j * tileHeight,
-            tileWidth,
-            tileHeight,
-            true
-          );
+          drawTile(ctx, i, j, tileWidth, tileHeight, true);
           continue;
         }
-        bCtx.drawImage(
-          canvas,
-          i * tileWidth,
-          j * tileHeight,
-          tileWidth,
-          tileHeight,
-          tiles[tile].get("x"),
-          tiles[tile].get("y"),
-          tileWidth,
-          tileHeight
-        );
-        ctx.drawImage(
-          buffer,
-          tiles[tile].get("x"),
-          tiles[tile].get("y"),
-          tileWidth,
-          tileHeight,
-          i * tileWidth,
-          j * tileHeight,
-          tileWidth,
-          tileHeight
-        );
-        drawTile(ctx, i * tileWidth, j * tileHeight, tileWidth, tileHeight);
+        bCtx.drawImage(canvas, i, j, tileWidth, tileHeight,
+          tiles[tile].get("x"), tiles[tile].get("y"), tileWidth, tileHeight);
+        ctx.drawImage(buffer, tiles[tile].get("x"), tiles[tile].get("y"),
+          tileWidth, tileHeight, i, j, tileWidth, tileHeight);
+        drawTile(ctx, i, j, tileWidth, tileHeight);
       }
     }
 
@@ -104,8 +79,8 @@ window.onload = () => {
       this.finalTile = tiles.pop();
       board.pop();
       board.push(-1);
-      const val = 360 * Math.random();
-      drawCurve(getCurve(0, 0, val, W, H), val);
+      const val = Math.ceil(10 * Math.random()) + 4;
+      drawCurve(bCtx, getCurve(0, 0, val, W, H), val, 4);
       this.moves = this._shuffle(board);
       this._drawTiles();
     }
@@ -123,7 +98,10 @@ window.onload = () => {
     }
 
     isPlaying() {
-      return !isArrEqual(board);
+      const ks = [...Array(board.length).keys()];
+      for (let i = 0; i < board.length - 1; i++)
+        if (board[i] !== ks[i]) return true;
+      return false;
     }
 
     draw() {
@@ -142,22 +120,13 @@ window.onload = () => {
     _drawPairs() {
       ctx.clearRect(0, 0, W, H);
       for (let idx = 0; idx < cols * rows; idx++) {
-        const i = idx % cols;
-        const j = Math.floor(idx / rows);
-        drawTile(ctx, i * tileWidth, j * tileHeight, tileWidth, tileHeight);
+        const i = (idx % cols) * tileWidth;
+        const j = Math.floor(idx / rows) * tileHeight;
+        drawTile(ctx, i, j, tileWidth, tileHeight);
         // if a tile is flipped, copy from buffer to canvas.
         if (this.flipped[idx]) {
-          ctx.drawImage(
-            buffer,
-            i * tileWidth,
-            j * tileHeight,
-            tileWidth,
-            tileHeight,
-            i * tileWidth,
-            j * tileHeight,
-            tileWidth,
-            tileHeight
-          );
+          ctx.drawImage(buffer, i, j, tileWidth, tileHeight,
+            i, j, tileWidth, tileHeight);
         }
         // if a tile is flipped and its pair is not flipped,
         // reset both tiles to unflipped at a "new" third second.
@@ -186,7 +155,7 @@ window.onload = () => {
     }
 
     makeMove(i, j) {
-      return this._move(i, j) ? 1 : 0;
+      return Number(this._move(i, j));
     }
 
     setup() {
@@ -211,7 +180,7 @@ window.onload = () => {
         const i = (idx % cols) * tileWidth;
         const j = Math.floor(idx / rows) * tileHeight;
         const pointsArray = getCurve(i, j, val, tileWidth, tileHeight);
-        drawCurve(pointsArray, val);
+        drawCurve(bCtx, pointsArray, val);
         this.flipped.push(0);
       }
       this._drawPairs();
@@ -223,7 +192,7 @@ window.onload = () => {
     }
 
     isPlaying() {
-      return this.flipped.includes(0) ? true : false;
+      return this.flipped.includes(0);
     }
 
     draw() {
@@ -236,22 +205,15 @@ window.onload = () => {
       this.playing = true;
       this.seenSeconds = [];
       this.thatTile = 0;
-      this.r = 0;
-      this.g = 0;
-      this.b = 0;
     }
 
     makeMove(i, j) {
-      return (((this.thatTile % cols) === i) && (Math.floor(this.thatTile / rows) === j)) ? 1 : 0;
+      return Number((((this.thatTile % cols) === i) && (Math.floor(this.thatTile / rows) === j)));
     }
 
     setup() {
       this.playing = true;
       this.seenSeconds = [];
-      this.r = Math.random() * 75 + 150;
-      this.g = Math.random() * 75 + 150;
-      this.b = Math.random() * 75 + 150;
-      this.fillColor = `rgb(${this.r}, ${this.g}, ${this.b})`;
       this.thatTile = Math.floor(Math.random() * (cols * rows));
     }
 
@@ -266,28 +228,29 @@ window.onload = () => {
 
     draw() {
       if (!this.playing) return;
-      this.r = Math.random() * 50 + 150;
-      this.g = Math.random() * 50 + 150;
-      this.b = Math.random() * 50 + 150;
-      const offset = 75 * (2 * Math.random() - 1) + 25;
       const gameTime = Math.floor(frameIdx);
-      if (!this.seenSeconds.includes(gameTime) && gameTime % 3 === 0) {
+      const val = Math.ceil(10 * Math.random()) + 4;
+      if (!this.seenSeconds.includes(gameTime) && gameTime % 2 === 0) {
+        const ii = (this.thatTile % cols) * tileWidth;
+        const jj = Math.floor(this.thatTile / rows) * tileHeight;
         for (let idx = 0; idx < cols * rows; idx++) {
-          const i = idx % cols;
-          const j = Math.floor(idx / rows);
-          drawTile(ctx, i * tileWidth, j * tileHeight, tileWidth, tileHeight, true, true,  this.fillColor);
+          const i = (idx % cols) * tileWidth;
+          const j = Math.floor(idx / rows) * tileHeight;
+          if (ii === i && jj === j) continue;
+          const points = getCurve(i, j, val, tileWidth, tileHeight);
+          drawCurve(ctx, points, val);
         }
-        drawTile(ctx, (this.thatTile % cols) * tileWidth, Math.floor(this.thatTile / rows) * tileHeight, 
-          tileWidth, tileHeight, true, true, `rgb(${this.r + offset}, ${this.g + offset}, ${this.b + offset})`);
+        drawCurve(ctx, getCurve(ii, jj, val - 1, tileWidth, tileHeight), val - 1, 4);
         this.seenSeconds.push(gameTime);
-      } else if (!this.seenSeconds.includes(gameTime)) {
+      } else if (!this.seenSeconds.includes(gameTime) && gameTime % 2 !== 0) {
         ctx.clearRect(0, 0, W, H);
         this.thatTile = Math.floor(Math.random() * (cols * rows));
-        this.fillColor = `rgb(${this.r}, ${this.g}, ${this.b})`;
         this.seenSeconds.push(gameTime);
       }
     }
   }
+
+  const fps = 30;
 
   const counter = document.getElementById("counter");
   const diffSlider = document.getElementById("level");
@@ -301,19 +264,20 @@ window.onload = () => {
 
   const games = [new SlidePuzzle(), new PairsPuzzle(), new ThatTilePuzzle()];
 
-  let game;
-  let board = [];
-  let tiles = [];
   let W;
   let H;
+  let game;
+  let timer;
   let tileWidth;
+  let board = [];
+  let tiles = [];
   let tileHeight;
   let frameIdx = 0;
   let gameMoves = 0;
   let diffValue = 0;
+  let timeController = true;
   let cols = (diffValue + 1) * 2;
   let rows = (diffValue + 1) * 2;
-  let timerController;
 
   function setSize() {
     // scale canvas dimensions.
@@ -324,14 +288,7 @@ window.onload = () => {
     W = canvas.width;
     H = canvas.height;
   }
-  window.addEventListener("resize", setSize);
-  setSize();
 
-  newGameButton.addEventListener("pointerdown", startGame);
-  endGameButton.addEventListener("pointerdown", stopGame);
-  diffSlider.addEventListener("change", startGame);
-
-  canvas.addEventListener("pointerdown", mousePress);
   function mousePress(event) {
     // do not register move if the game is not on.
     if (!canvas || !game || !game.isPlaying()) return;
@@ -353,6 +310,8 @@ window.onload = () => {
     diffValue = diffSlider.valueAsNumber;
     rows = (diffValue + 1) * 2;
     cols = (diffValue + 1) * 2;
+    if (rows > 8) rows = 8;
+    if (cols > 8) cols = 8;
     tileWidth = W / cols;
     tileHeight = H / rows;
     // reset game variables.
@@ -361,28 +320,32 @@ window.onload = () => {
     frameIdx = 0;
     gameMoves = 0;
     counter.textContent = `${gameMoves}`;
-    const gameIdx = document.querySelector("input[name='puzzle-title']:checked").value;
-    game = games[Number(gameIdx)];
+    const gameIdx = document.querySelector("input[name='puzzle-title']:checked");
+    game = games[Number(gameIdx.value)];
     game.setup();
 
-    timerController = new AbortController();
-    animationInterval(1000 / 60, timerController.signal, () => {
+    timeController = true;
+    animationInterval(1000 / fps, timeController, () => {
       drawGame();
     });
   }
 
   function stopGame() {
-    if (!timerController) return;
-    if (game && game.end())  {
+    if (!timeController) return;
+    if (game && game.end()) {
       game.draw();
+      timeController = false;
+      window.clearTimeout(timer);
     }
-    timerController.abort();
   }
 
   function drawGame() {
-    game.draw();
-    frameIdx+=1/60; 
-    if (!game.isPlaying()) stopGame();
+    if (game.isPlaying()) {
+      game.draw();
+      frameIdx += 1 / 60; 
+    } else {
+      stopGame(); 
+    }
   }
 
   function swap(i, j, arr) {
@@ -402,20 +365,12 @@ window.onload = () => {
     return arr;
   }
 
-  function isArrEqual(arr1, arr2 = []) {
-    if (!arr2.length) arr2 = [...Array(arr1.length).keys()];
-    if (arr1.length !== arr2.length) return;
-    for (let i = 0; i < arr1.length - 1; i++)
-      if (arr1[i] !== arr2[i]) return false;
-    return true;
-  }
-
   function animationInterval(ms, signal, callback) {
     const start = document.timeline
       ? document.timeline.currentTime
       : performance.now();
     function frame(time) {
-      if (signal.aborted) return;
+      if (!signal) return;
       callback(time);
       scheduleFrame(time);
     }
@@ -424,7 +379,7 @@ window.onload = () => {
       const roundedElapsed = Math.round(elapsed / ms) * ms;
       const targetNext = start + roundedElapsed + ms;
       const delay = targetNext - performance.now();
-      window.setTimeout(() => {
+      timer = window.setTimeout(() => {
         window.requestAnimationFrame(frame);
       }, delay);
     }
@@ -432,8 +387,8 @@ window.onload = () => {
   }
 
   // draws a tile in the provided canvas "c", x-coordinate "x", 
-  // y-coordinate "y", width "w", and height "h". if "fill" is true: the tile
-  // is filled; if "stroke" is true: the tile has 0.5px border.
+  // y-coordinate "y", width "w", and height "h". if "fill" is true: 
+  // the tile is filled; if "stroke" is true: the tile has 0.5px border.
   function drawTile(c, x, y, w, h, fill = false, stroke = true, fillColor = "rgb(74,74,74)", strokeColor = "rgb(74,74,74)") {
     c.lineWidth = 1;
     c.fillStyle = fillColor;
@@ -445,51 +400,65 @@ window.onload = () => {
   }
 
   function getCurve(x, y, v, w, h) {
-    const xMin = x + w;
-    const xMax = x;
-    const yMin = y + h;
-    const yMax = y;
+    const xs = [];
+    const ys = [];
+    const points = [];
+
+    const a = 5 * v + 3;
+    const b = 4 * v + 2;
+    const sigma = Math.PI / 2;
+
+    const xMin = x + w - 2;
+    const xMax = x + 2;
+    const yMin = y + h - 2;
+    const yMax = y + 2;
+
     let xMin1 = xMin;
     let xMax1 = xMax;
     let yMin1 = yMin;
     let yMax1 = yMax;
-    const points = [];
-    for (let i = 0; i <= 360; i += 1 / 2) {
-      points.push([x, y]);
-      const k = (97 * i * Math.PI / 180);
-      const r = Math.sin(k * (v + 7));
-      x += -5 * r * w * Math.cos(k);
-      y += -5 * r * h * Math.sin(k);
+
+    for (let i = 0; i <= Math.PI; i += 0.005) {
+      xs.push(x);
+      ys.push(y);
+
+      // https://en.wikipedia.org/wiki/Lissajous_curve
+      x += a * Math.cos(a * i + sigma);
+      y += b * Math.sin(b * i);
+
       if (x > xMax1) xMax1 = x;
       if (x < xMin1) xMin1 = x;
       if (y > yMax1) yMax1 = y;
       if (y < yMin1) yMin1 = y;
     }
-    for (let i = 0; i < points.length; i++) {
-      points[i][0] =
-        ((points[i][0] - xMin1) * (xMax - xMin)) / (xMax1 - xMin1) + xMin;
-      points[i][1] =
-        ((points[i][1] - yMin1) * (yMax - yMin)) / (yMax1 - yMin1) + yMin;
+
+    for (let i = 0; i < xs.length; i++) {
+      points.push([ 
+        ((xs[i] - xMin1) * (xMax - xMin)) / (xMax1 - xMin1) + xMin, 
+        ((ys[i] - yMin1) * (yMax - yMin)) / (yMax1 - yMin1) + yMin
+      ]);
     }
+
     return points;
   }
 
-  function drawCurve(arr, v) {
-    bCtx.lineWidth = 2;
-    bCtx.fillStyle = bCtx.strokeStyle = `rgb(
-  ${Math.cos(v / 2) * 75 + 150},
-  ${Math.sin(v / 4) * 75 + 150},
-  ${Math.sin(v / 6) * 75 + 150})`;
-    bCtx.beginPath();
-    const len = arr.length - 1;
-    const s = diffValue + 2;
-    for (let i = len; i > 0; i -= s) {
-      const x = arr[i][0];
-      const y = arr[i][1];
-      bCtx.lineTo(x, y);
-      bCtx.moveTo(x, y);
-    }
-    bCtx.stroke();
-    bCtx.closePath();
+  function drawCurve(c, arr, v, lw = 1) {
+    c.lineWidth = lw;
+    c.fillStyle = c.strokeStyle = `rgb(${Math.cos(v / 2) * 75 + 150}, 
+      ${Math.sin(v / 4) * 75 + 150}, ${Math.sin(v / 6) * 75 + 150})`;
+    const p = new Path2D();
+    arr.forEach((xy, i) => {
+      p.lineTo(xy[0], xy[1]);
+    });
+    p.closePath();
+    c.stroke(p);
   }
+
+  setSize();
+
+  window.addEventListener("resize", setSize);
+  newGameButton.addEventListener("pointerdown", startGame);
+  endGameButton.addEventListener("pointerdown", stopGame);
+  diffSlider.addEventListener("change", startGame);
+  canvas.addEventListener("pointerdown", mousePress);
 };
