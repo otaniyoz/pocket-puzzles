@@ -1,5 +1,3 @@
-# pocket puzzles #
-
 ![dark themed tile-based puzzle](static/screenshot.png)
 
 ## usage ##

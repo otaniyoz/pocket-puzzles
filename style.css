@@ -127,7 +127,6 @@ a:hover {
 
 #warning {
   color: #ee977f;
-  font-weight: bold;
 }
 
 #page-header {
@@ -245,7 +244,6 @@ a:hover {
 @media (prefers-color-scheme: dark) {
   #warning {
     color: #b1705a;
-    font-weight: bold;
   }
 
   label:hover,
