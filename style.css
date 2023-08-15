@@ -2,10 +2,13 @@
   --radius: 2ch;
   --small-gap: 1vmin;
   --large-gap: 1vmax;
-  --large-padding: 1vmax;
-  --small-padding: 1vmin;
+  --xlarge-gap: 2vmax;
+  --bold-weight: 700;
   --font-size-regular: clamp(1rem, 2vmax, 2rem);
   --font-size-medium: clamp(1rem, 3vw + 1rem, 8rem);
+  --orange-light: #ee977f; 
+  --orange-dark: #b1705a;
+  --white-light: #fbf8ef;
 }
 
 :root {
@@ -14,13 +17,10 @@
 
 body {
   margin: 0;
-  display: flex;
   color: #111;
-  gap: var(--large-gap);
   font-family: sans-serif;
-  flex-flow: column nowrap;
-  background-color: #fbf8ef;
-  padding: var(--small-padding);
+  background-color: var(--white-light);
+  padding: var(--small-gap) var(--large-gap);
   min-height: fit-content;
 }
 
@@ -55,17 +55,19 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked+label {
-  background-color: #ee977f;
+  background-color: var(--orange-light);
+  color: #111;
 }
 
 button {
   border: none;
   color: #111;
   flex: 2 2 100%;
+  font-weight: var(--bold-weight);
   font-family: sans-serif;
   font-size: var(--font-size-regular);
   border-radius: var(--radius);
-  padding: var(--large-padding);
+  padding: var(--large-gap);
   background-color: #e6e5e6;
 }
 
@@ -73,7 +75,7 @@ label:hover,
 button:hover,
 input[type="range"]::-webkit-slider-thumb:hover {
   cursor: pointer;
-  outline: 1px solid #ee977f;
+  outline: 1px solid var(--orange-light);
 }
 
 fieldset {
@@ -91,19 +93,20 @@ label {
   border: none;
   display: flex;
   flex: 2 2 100%;
+  font-weight: var(--bold-weight);
+  text-align: center;
   align-items: center;
   justify-content: center;
-  text-align: center;
   font-size: var(--font-size-regular);
   border-radius: var(--radius);
-  padding: var(--large-padding);
+  padding: var(--large-gap);
   background-color: #e6e5e6;
 }
 
 aside {
   display: grid;
-  padding-bottom: var(--large-padding);
-  row-gap: var(--large-padding);
+  padding-bottom: var(--large-gap);
+  row-gap: var(--large-gap);
 }
 
 a {
@@ -114,28 +117,26 @@ a {
 }
 
 a:hover {
-  color: #ee977f;
-  border-bottom: 1px solid #ee977f;
+  color: var(--orange-light);
+  border-bottom: 1px solid var(--orange-light);
 }
 
 #about {
+  margin: 0;
   color: #4a4a4a;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding-top: var(--xlarge-gap);
+  padding-bottom: var(--large-gap);
   font-size: var(--font-size-regular);
 }
 
 #warning {
-  color: #ee977f;
+  color: var(--orange-light);
 }
 
 #page-header {
   padding: 0;
   width: 100%;
-  display: flex;
-  flex-flow: row nowrap;
-  gap: var(--large-gap);
-  padding-bottom: var(--large-padding);
+  padding-bottom: var(--large-gap);
 }
 
 #page-title {
@@ -144,8 +145,8 @@ a:hover {
   user-select: none;
   line-height: 0.9em;
   word-wrap: break-word;
-  padding-top: var(--large-padding);
-  padding-bottom: var(--large-padding);
+  padding-top: var(--large-gap);
+  padding-bottom: var(--xlarge-gap);
   font-size: clamp(2rem, 2vmax + 1rem, 4rem);
 }
 
@@ -162,7 +163,7 @@ a:hover {
   padding-bottom: 0;
   background-color: #e6e5e6;
   border-radius: var(--radius);
-  padding: var(--large-padding);
+  padding: var(--large-gap);
   justify-content: space-between;
 }
 
@@ -176,7 +177,7 @@ a:hover {
   background-color: #e6e5e6;
   border-radius: var(--radius);
   border: 1px solid rgb(74, 74, 74);
-  margin-bottom: var(--large-padding);
+  margin-bottom: var(--large-gap);
 }
 
 #puzzle-start {
@@ -197,14 +198,14 @@ a:hover {
   margin: 0;
   padding: 0;
   color: #4a4a4a;
-  padding-bottom: clamp(1rem, 1.25em, 1.5rem);
+  padding-bottom: var(--xlarge-gap);
   font-size: var(--font-size-regular);
-  padding-top: var(--large-padding);
+  padding-top: var(--large-gap);
 }
 
-#puzzle {
+main {
   display: grid;
-  gap: var(--large-padding);
+  gap: var(--large-gap);
 }
 
 @media screen and (min-width: 1200px) {
@@ -212,7 +213,7 @@ a:hover {
     grid-area: 4 / 1 / 5 / 7;
   }
 
-  #puzzle {
+  main {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: max-content;
   }
@@ -243,13 +244,13 @@ a:hover {
 
 @media (prefers-color-scheme: dark) {
   #warning {
-    color: #b1705a;
+    color: var(--orange-dark);
   }
 
   label:hover,
   button:hover,
   input[type="range"]::-webkit-slider-thumb:hover {
-    outline: 1px solid #b1705a;
+    outline: 1px solid var(--orange-dark);
   }
 
   a {
@@ -257,15 +258,15 @@ a:hover {
   }
 
   a:hover {
-    color: #b1705a;
-    border-bottom: 1px solid #b1705a;
+    color: var(--orange-dark);
+    border-bottom: 1px solid var(--orange-dark);
   }
 
   body,
   label,
   button,
   #counter {
-    color: #fbf8ef;
+    color: var(--white-light);
   }
 
   label,
@@ -276,7 +277,7 @@ a:hover {
   }
 
   input[type="radio"]:checked+label {
-    background-color: #b1705a;
+    background-color: var(--orange-dark);
   }
 
   input[type="range"] {
