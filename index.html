@@ -12,39 +12,39 @@
   <title>Pocket puzzles</title>
 </head>
 
-<body>
-  <header id="page-header">
-    <h3 id="page-title">Pocket puzzles</h3>
+<body class="no-margin">
+  <header id="page-header" class="no-padding full-width">
+    <h3 id="page-title" class="no-margin">Pocket puzzles</h3>
   </header>
   <main>
-    <canvas id="puzzle-canvas"></canvas>
+    <canvas id="puzzle-canvas" class="full-width"></canvas>
     <aside>
-      <fieldset id="puzzle-title-container">
+      <fieldset id="puzzle-title-container" class="no-border no-margin no-padding full-width flex-row">
         <input id="sliding-tiles" type="radio" name="puzzle-title" value="0" checked />
-        <label for="sliding-tiles">Slide!</label>
+        <label for="sliding-tiles" class="no-border flex-row">Slide!</label>
 
         <input id="pair-tiles" type="radio" name="puzzle-title" value="1" />
-        <label for="pair-tiles">Pairs</label>
+        <label for="pair-tiles" class="no-border flex-row">Pairs</label>
 
         <input id="that-tile" type="radio" name="puzzle-title" value="2" />
-        <label for="that-tile">That tile</label>
+        <label for="that-tile" class="no-border flex-row">That tile</label>
       </fieldset>
-      <div id="puzzle-control-misc" class="puzzle-controls-container">
-        <div id="level-container" class="puzzle-control">
-          <p id="puzzle-level">Difficulty</p>
-          <input id="level" type="range" min="0" max="4" step="2" value="0" />
+      <div id="puzzle-control-misc" class="puzzle-controls-container flex-row">
+        <div id="level-container" class="puzzle-control flex-column">
+          <p id="puzzle-level" class="no-margin no-padding">Difficulty</p>
+          <input class="no-margin no-padding full-width" id="level" type="range" min="0" max="4" step="2" value="0" />
         </div>
-        <div id="counter-container" class="puzzle-control">
-          <p id="puzzle-counter">Moves</p>
-          <p id="counter">0</p>
+        <div id="counter-container" class="puzzle-control flex-column">
+          <p id="puzzle-counter" class="no-margin no-padding">Moves</p>
+          <p id="counter" class="no-margin">0</p>
         </div>
       </div>
-      <div id="puzzle-control-buttons" class="puzzle-controls-container">
-        <button id="puzzle-end">Give up</button>
-        <button id="puzzle-start">Start</button>
+      <div id="puzzle-control-buttons" class="puzzle-controls-container flex-row">
+        <button id="puzzle-end" class="no-border">Give up</button>
+        <button id="puzzle-start" class="no-border">Start</button>
       </div>
-      <p id="about">
-        This is a collection of puzzles designed to fit in a pocket. <span id="warning">It may not be suitable for people sensitive to rapid animation</span>.</a>
+      <p id="warning" class="no-margin">
+        May not be suitable for people with photosensitive epilepsy
       </p>
     </aside>
   </main>

@@ -1,4 +1,4 @@
-![dark themed tile-based puzzle](static/screenshot.png)
+pocket puzzles is a collection of puzzles designed to fit in a pocket.
 
 ## usage ##
 open `index.html` in a browser
