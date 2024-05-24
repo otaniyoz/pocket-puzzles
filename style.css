@@ -148,13 +148,6 @@ aside {
   padding-bottom: var(--large-gap);
 }
 
-#warning {
-  color: var(--orange-light);
-  padding-top: var(--xlarge-gap);
-  padding-bottom: var(--large-gap);
-  font-size: var(--font-size-regular);
-}
-
 #page-header {
   padding-bottom: var(--large-gap);
 }
@@ -217,10 +210,6 @@ main {
 }
 
 @media screen and (min-width: 1200px) {
-  #warning {
-    grid-area: 4 / 1 / 5 / 7;
-  }
-
   main {
     grid-template-rows: max-content;
     grid-template-columns: repeat(4, 1fr);
