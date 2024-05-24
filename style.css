@@ -161,6 +161,24 @@ aside {
   font-size: clamp(2rem, 2vmax + 1rem, 4rem);
 }
 
+.puzzle-title-blue {
+  opacity: 0.5;
+  position: absolute;
+  color: var(--blue-light);
+}
+
+.puzzle-title-orange {
+  opacity: 0.5;
+  position: absolute;
+  color: var(--orange-light);
+}
+
+.puzzle-title-green {
+  opacity: 0.5;
+  position: absolute;
+  color: var(--green-light);
+}
+
 .puzzle-controls-container {
   gap: var(--small-gap);
 }
