@@ -161,7 +161,7 @@ aside {
   font-size: clamp(2rem, 2vmax + 1rem, 4rem);
 }
 
-#page-title-grid {
+.page-title-grid {
   display: inline-grid;
   grid-template-columns: 7fr;
 }
