@@ -161,19 +161,19 @@ aside {
   font-size: clamp(2rem, 2vmax + 1rem, 4rem);
 }
 
-.puzzle-title-blue {
+.page-title-blue {
   opacity: 0.5;
   position: absolute;
   color: var(--blue-light);
 }
 
-.puzzle-title-orange {
+.page-title-orange {
   opacity: 0.5;
   position: absolute;
   color: var(--orange-light);
 }
 
-.puzzle-title-green {
+.page-title-green {
   opacity: 0.5;
   position: absolute;
   color: var(--green-light);
