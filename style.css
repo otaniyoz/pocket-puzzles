@@ -155,7 +155,7 @@ aside {
 #page-title {
   flex: 4 2 100%;
   word-wrap: break-word;
-  padding-top: var(--large-gap);
+  padding-top: var(--xlarge-gap);
   padding-bottom: var(--xlarge-gap);
   line-height: var(--small-line-height);
   font-size: clamp(2rem, 2vmax + 1rem, 4rem);
@@ -164,13 +164,14 @@ aside {
 .page-title-blue {
   opacity: 0.5;
   position: absolute;
+  top: var(--large-gap);
   color: var(--blue-light);
 }
 
 .page-title-orange {
   opacity: 0.5;
   position: absolute;
-  color: var(--orange-light) !important;
+  color: var(--orange-light);
 }
 
 .page-title-green {
