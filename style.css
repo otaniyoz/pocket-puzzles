@@ -240,10 +240,6 @@ main {
 }
 
 @media (prefers-color-scheme: dark) {
-  #warning {
-    color: var(--orange-dark);
-  }
-
   label:hover,
   button:hover,
   input[type="range"]::-webkit-slider-thumb:hover {
