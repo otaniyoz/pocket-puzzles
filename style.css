@@ -168,14 +168,20 @@ aside {
 .page-title-blue {
   opacity: 0.8;
   color: var(--blue-light);
+  grid-row-start: 1;
+  grid-column-start: 1;
 }
 .page-title-orange {
   opacity: 0.8;
   color: var(--orange-light);
+  grid-row-start: 1;
+  grid-column-start: 1;
 }
 .page-title-green {
   opacity: 0.8;
   color: var(--green-light);
+  grid-row-start: 1;
+  grid-column-start: 1;
 }
 
 .puzzle-controls-container {
