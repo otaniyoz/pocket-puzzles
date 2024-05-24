@@ -148,10 +148,6 @@ aside {
   padding-bottom: var(--large-gap);
 }
 
-#page-header {
-  padding-bottom: var(--large-gap);
-}
-
 #page-title {
   flex: 4 2 100%;
   word-wrap: break-word;
