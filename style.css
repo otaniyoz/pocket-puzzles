@@ -170,7 +170,7 @@ aside {
 .page-title-orange {
   opacity: 0.5;
   position: absolute;
-  color: var(--orange-light);
+  color: var(--orange-light) !important;
 }
 
 .page-title-green {
