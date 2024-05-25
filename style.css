@@ -117,19 +117,10 @@ button {
   font-size: var(--font-size-regular);
   background-color: var(--grey-light);
 }
-
-label:hover,
-button:hover,
-input[type="range"]::-webkit-slider-thumb:hover {
-  cursor: pointer;
-  outline: 1px solid var(--orange-light);
-}
-
 fieldset {
   gap: var(--small-gap);
   justify-content: space-between;
 }
-
 label {
   flex: 2 2 100%;
   text-align: center;
@@ -141,13 +132,11 @@ label {
   font-size: var(--font-size-regular);
   background-color: var(--grey-light);
 }
-
 aside {
   display: grid;
   row-gap: var(--large-gap);
   padding-bottom: var(--large-gap);
 }
-
 #page-title {
   flex: 4 2 100%;
   word-wrap: break-word;
@@ -156,7 +145,6 @@ aside {
   line-height: var(--small-line-height);
   font-size: clamp(2rem, 2vmax + 1rem, 4rem);
 }
-
 .page-title-grid {
   display: inline-grid;
   grid-template-columns: 7fr;
@@ -351,11 +339,6 @@ main {
 }
 
 @media (prefers-color-scheme: dark) {
-  label:hover,
-  button:hover,
-  input[type="range"]::-webkit-slider-thumb:hover {
-    outline: 1px solid var(--orange-dark);
-  }
   body,
   label,
   button,
