@@ -404,7 +404,7 @@ window.onload = () => {
     const ys = [];
     const points = [];
 
-    const k = (0.6 * v + 0.76) / (0.8 * v + 0.68);
+    const k = Math.PI; // (0.6 * v + 0.76) / (0.8 * v + 0.68);
     
     const xMin = x + w - 4;
     const xMax = x + 4;
@@ -416,7 +416,7 @@ window.onload = () => {
     let yMin1 = yMin;
     let yMax1 = yMax;
 
-    for (let i = 0; i <= 2 * Math.PI; i += 0.005) {
+    for (let i = 0; i <= 2 * Math.PI; i += 0.05) {
       xs.push(x);
       ys.push(y);
 
