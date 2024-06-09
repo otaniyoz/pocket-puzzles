@@ -416,7 +416,7 @@ window.onload = () => {
     let yMin1 = yMin;
     let yMax1 = yMax;
 
-    for (let i = 0; i <= 2 * Math.PI; i += 0.05) {
+    for (let i = 0; i <= 2 * Math.PI; i += 0.001) {
       xs.push(x);
       ys.push(y);
 
