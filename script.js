@@ -404,13 +404,13 @@ window.onload = () => {
     const ys = [];
     const points = [];
 
-    const a = 0.6 * (v - 4) + 1;
-    const b = 0.8 * (v - 4) + 1;
+    const a = Math.floor(0.6 * (v - 4) + 1);
+    const b = Math.floor(0.8 * (v - 4) + 1);
 
-    const xMin = x + w - 2;
-    const xMax = x + 2;
-    const yMin = y + h - 2;
-    const yMax = y + 2;
+    const xMin = x + w - 4;
+    const xMax = x + 4;
+    const yMin = y + h - 4;
+    const yMax = y + 4;
 
     let xMin1 = xMin;
     let xMax1 = xMax;
