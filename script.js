@@ -406,7 +406,6 @@ window.onload = () => {
 
     const a = 5 * v + 3;
     const b = 4 * v + 2;
-    const sigma = Math.PI / 2;
 
     const xMin = x + w - 2;
     const xMax = x + 2;
@@ -422,9 +421,9 @@ window.onload = () => {
       xs.push(x);
       ys.push(y);
 
-      // https://en.wikipedia.org/wiki/Lissajous_curve
-      x += a * Math.cos(a * i + sigma);
-      y += b * Math.sin(b * i);
+      // rose curve
+      x += a * b * Math.sin(a / b * i) * Math.cos(i);
+      y += a * b * Math.cos(a / b * i) * Math.sin(i);
 
       if (x > xMax1) xMax1 = x;
       if (x < xMin1) xMin1 = x;
