@@ -419,8 +419,8 @@ window.onload = () => {
       ys.push(y);
 
       // rose curve
-      x += Math.cos(v * i) * Math.cos(i);
-      y += Math.cos(v * i) * Math.sin(i);
+      x += Math.cos((v+4) * i) * Math.cos(i);
+      y += Math.cos((v+4) * i) * Math.sin(i);
 
       if (x > xMax1) xMax1 = x;
       if (x < xMin1) xMin1 = x;
@@ -444,8 +444,7 @@ window.onload = () => {
       ${Math.sin(v / 4) * 75 + 150}, ${Math.sin(v / 6) * 75 + 150})`;
     const p = new Path2D();
     arr.forEach((xy, i) => {
-      // p.lineTo(xy[0], xy[1]);
-      p.quadraticCurveTo(arr[0][0], arr[0][1], xy[0], xy[1]);
+      p.lineTo(xy[0], xy[1]);
     });
     p.closePath();
     c.stroke(p);
