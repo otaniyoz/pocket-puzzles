@@ -403,6 +403,9 @@ window.onload = () => {
     const xs = [];
     const ys = [];
     const points = [];
+
+    const n = v + 4;
+    const d = 0.000005 * v + 0.07;
     
     const xMin = x + w - 4;
     const xMax = x + 4;
@@ -418,9 +421,10 @@ window.onload = () => {
       xs.push(x);
       ys.push(y);
 
-      // rose curve
-      x += Math.cos((v+4) * i) * Math.cos(i);
-      y += Math.cos((v+4) * i) * Math.sin(i);
+      // maurer rose curve
+      let r = Math.cos(n * d * i);
+      x += r * Math.cos(d * i);
+      y += r * Math.sin(d * i);
 
       if (x > xMax1) xMax1 = x;
       if (x < xMin1) xMin1 = x;
