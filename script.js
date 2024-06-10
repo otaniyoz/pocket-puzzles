@@ -404,8 +404,8 @@ window.onload = () => {
     const ys = [];
     const points = [];
 
-    const n = (0.6 * v + 0.76);
-    const d = (0.8 * v + 0.68);
+    const n = (0.6 * v + 0.76)|0;
+    const d = (0.8 * v + 0.68)|0;
     
     const xMin = x + w - 4;
     const xMax = x + 4;
