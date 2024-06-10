@@ -404,7 +404,7 @@ window.onload = () => {
     const ys = [];
     const points = [];
 
-    const k = Math.PI; // (0.6 * v + 0.76) / (0.8 * v + 0.68);
+    const k = (0.6 * v + 0.76) / (0.8 * v + 0.68);
     
     const xMin = x + w - 4;
     const xMax = x + 4;
@@ -421,8 +421,8 @@ window.onload = () => {
       ys.push(y);
 
       // rose curve
-      x += Math.sin(k * i) * Math.cos(i);
-      y += Math.cos(k * i) * Math.sin(i);
+      x += Math.sin(k * i);
+      y += Math.cos(k * i);
 
       if (x > xMax1) xMax1 = x;
       if (x < xMin1) xMin1 = x;
