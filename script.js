@@ -422,8 +422,8 @@ window.onload = () => {
       ys.push(y);
 
       // rose curve
-      x += Math.sin(n / d * i);
-      y += Math.cos(n / d * i);
+      x += Math.cos(n / d * i) * Math.cos(i);
+      y += Math.cos(n / d * i) * Math.sin(i);
 
       if (x > xMax1) xMax1 = x;
       if (x < xMin1) xMin1 = x;
