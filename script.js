@@ -35,7 +35,7 @@ window.onload = () => {
         (Math.abs(i - blankCol) === 1 || Math.abs(j - blankRow) === 1) &&
         (blankCol === i || blankRow === j)
       ) {
-        swap(blank, i + j * cols, arr);
+        [arr[blank], arr[i+j*cols]] = [arr[i+j*cols], arr[blank]];
         return [blank, i + j * cols];
       }
       return [];
@@ -90,7 +90,7 @@ window.onload = () => {
       // this is necessary when the user gives up.
       while (this.moves.length) {
         const m = this.moves.pop();
-        swap(m[1], m[0], board);
+        [board[m[1]], board[m[0]]] = [board[m[0]], board[m[1]]];
       }
       tiles.push(this.finalTile);
       board[board.indexOf(-1)] = board.length - 1;
@@ -347,12 +347,6 @@ window.onload = () => {
       stopGame(); 
     }
   }
-
-  function swap(i, j, arr) {
-    const temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-  }
   
   // Fisher-Yates to shuffle the array.
   function shuffleArray(arr) {
@@ -360,7 +354,7 @@ window.onload = () => {
     for (let i = n - 1; i >= 1; i--) {
       let j = Math.floor(Math.random() * (i + 1));
       j = j > i ? i : j;
-      swap(i, j, arr);
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
   }
