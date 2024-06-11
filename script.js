@@ -411,14 +411,15 @@ window.onload = () => {
     let yMin1 = yMin;
     let yMax1 = yMax;
 
-    for (let i = 0; i <= 2 * Math.PI; i += 0.005) {
+    for (let theta = 0; theta <= 361; theta += 1) {
       xs.push(x);
       ys.push(y);
 
       // maurer rose curve
-      let r = Math.cos(n * d * i);
-      x += r * Math.cos(d * i);
-      y += r * Math.sin(d * i);
+      let rad = theta * Math.PI / 180;
+      let r = Math.cos(n * d * rad);
+      x += r * Math.cos(d * rad);
+      y += r * Math.sin(d * rad);
 
       if (x > xMax1) xMax1 = x;
       if (x < xMin1) xMin1 = x;
