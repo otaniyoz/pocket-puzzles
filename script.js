@@ -79,7 +79,7 @@ window.onload = () => {
       this.finalTile = tiles.pop();
       board.pop();
       board.push(-1);
-      const val = Math.ceil(10 * Math.random()) + 4;
+      const val = Math.ceil(2 * Math.random()) + 12;
       drawCurve(bCtx, getCurve(0, 0, val, W, H), val, 4);
       this.moves = this._shuffle(board);
       this._drawTiles();
@@ -173,7 +173,7 @@ window.onload = () => {
       // iterate over the shuffled board array and populate the buffer canvas
       // with the drawings of pairs.
       for (let idx = 0; idx < cols * rows; idx++) {
-        const val = board[idx];
+        const val = board[idx] + 1;
         if (!this.pairs.get(val)) this.pairs.set(val, []);
         const pair = this.pairs.get(val);
         pair.push(idx);
@@ -257,6 +257,7 @@ window.onload = () => {
   const newGameButton = document.getElementById("puzzle-start");
   const endGameButton = document.getElementById("puzzle-end");
   const canvas = document.getElementById("puzzle-canvas");
+  const pageTitle = document.getElementById("page-title");
 
   const ctx = canvas.getContext("2d", { alpha: "false" });
   const buffer = document.createElement("canvas");
@@ -302,6 +303,8 @@ window.onload = () => {
   }
 
   function startGame() {
+    if (pageTitle.style.visibility != 'hidden') pageTitle.style.visibility = 'hidden';
+
     if (game && game.isPlaying()) stopGame();
     ctx.clearRect(0, 0, W, H);
     bCtx.clearRect(0, 0, W, H);
@@ -398,8 +401,9 @@ window.onload = () => {
     const ys = [];
     const points = [];
 
-    const n = 0.5 * v;
-    const d = 0.448 * v;
+    const a = 180 * v * Math.PI;
+    const b = v / 18;
+    const c = b / 180;
     
     const xMin = x + w - 4;
     const xMax = x + 4;
@@ -411,15 +415,15 @@ window.onload = () => {
     let yMin1 = yMin;
     let yMax1 = yMax;
 
-    for (let theta = 0; theta <= 361; theta += 1) {
+    for (let t = 0; t < 2 * Math.PI; t += 0.1) {
       xs.push(x);
       ys.push(y);
 
-      // maurer rose curve
-      let rad = theta * Math.PI / 180;
-      let r = Math.cos(n * d * rad);
-      x += r * Math.cos(d * rad);
-      y += r * Math.sin(d * rad);
+      // starr rose: https://www.reddit.com/r/desmos/comments/k822h1/comment/gevif4i/
+      let r = 2 + .5 * Math.sin(a * t);
+      let rad = t + Math.sin(b * t) / c;      
+      x += r * Math.cos(rad);
+      y += r * Math.sin(rad);
 
       if (x > xMax1) xMax1 = x;
       if (x < xMin1) xMin1 = x;
@@ -451,9 +455,21 @@ window.onload = () => {
 
   setSize();
 
-  window.addEventListener("resize", setSize);
-  newGameButton.addEventListener("pointerdown", startGame);
-  endGameButton.addEventListener("pointerdown", stopGame);
-  diffSlider.addEventListener("change", startGame);
-  canvas.addEventListener("pointerdown", mousePress);
+  window.addEventListener('resize', setSize);
+  newGameButton.addEventListener('pointerdown', () => {
+    newGameButton.classList.add('clickback');
+    startGame();
+  });
+  newGameButton.addEventListener('animationend', () => {
+    newGameButton.classList.remove('clickback');  
+  });
+  endGameButton.addEventListener('pointerdown', () => {
+    endGameButton.classList.add('clickback');
+    stopGame();
+  });
+  endGameButton.addEventListener('animationend', () => {
+    endGameButton.classList.remove('clickback');  
+  });
+  diffSlider.addEventListener('change', startGame);
+  canvas.addEventListener('pointerdown', mousePress);
 };
