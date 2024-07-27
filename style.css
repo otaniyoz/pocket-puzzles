@@ -77,8 +77,7 @@ body {
   color: var(--black-light);
   font-family: "IBM Plex Sans";
   background-color: var(--white-light);
-  padding: calc(4*var(--large-gap)) calc(4*var(--small-gap)) ;
-  max-height: 100vh;
+  padding: calc(4*var(--large-gap)) calc(4*var(--small-gap));
 }
 input[type="range"],
 input[type="range"]::-webkit-slider-runnable-track,
@@ -155,16 +154,16 @@ aside {
   padding-bottom: var(--large-gap);
 }
 main {
-  min-width: 100%;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
+  margin-bottom: var(--large-gap);
+  height: fit-content;
 }
 #puzzle-canvas {
   aspect-ratio: 1/1;
   border: 1px solid #4a4a4a;
   border-radius: var(--radius);
-  margin-bottom: var(--large-gap);
   background-color: var(--grey-light);
   grid-row-start: 1;
   grid-column-start: 1;
@@ -175,7 +174,8 @@ main {
   visibility: visible;
   word-wrap: break-word;
   line-height: var(--small-line-height);
-  font-size: clamp(2rem, 12vmax + 1rem, 6rem);
+  font-size: clamp(2rem, 12vw + 1rem, 6rem);
+  text-align: center;
   grid-row-start: 1;
   grid-column-start: 1;
   width: min-content;

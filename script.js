@@ -12,7 +12,7 @@ window.onload = () => {
       for (let idx = 0; idx < cols * rows; idx++) {
         const tile = board[idx];
         const i = (idx % cols) * tileWidth;
-        const j = Math.floor(idx / rows) * tileHeight;
+        const j = ((idx / rows) | 0) * tileHeight;
         if (tile === -1) {
           drawTile(ctx, i, j, tileWidth, tileHeight, true);
           continue;
@@ -30,7 +30,7 @@ window.onload = () => {
     _move(i, j, arr) {
       const blank = board.indexOf(-1);
       const blankCol = blank % cols;
-      const blankRow = Math.floor(blank / rows);
+      const blankRow = (blank / rows) | 0;
       if (
         (Math.abs(i - blankCol) === 1 || Math.abs(j - blankRow) === 1) &&
         (blankCol === i || blankRow === j)
@@ -45,8 +45,8 @@ window.onload = () => {
     _shuffle(arr) {
       const shuffleSequence = [];
       for (let i = 0; i < (diffValue + 1) * 1000; i++) {
-        const r1 = Math.floor(Math.random() * cols);
-        const r2 = Math.floor(Math.random() * rows);
+        const r1 = (Math.random() * cols) | 0;
+        const r2 = (Math.random() * rows) | 0;
         const randomMove = this._move(r1, r2, arr);
         if (randomMove.length) shuffleSequence.push(randomMove);
       }
@@ -71,7 +71,7 @@ window.onload = () => {
         const tile = new Map([
           ["index", idx],
           ["x", (idx % cols) * tileWidth],
-          ["y", Math.floor(idx / rows) * tileHeight],
+          ["y", ((idx / rows) | 0) * tileHeight],
         ]);
         board.push(idx);
         tiles[idx] = tile;
@@ -79,15 +79,17 @@ window.onload = () => {
       this.finalTile = tiles.pop();
       board.pop();
       board.push(-1);
-      const val = Math.ceil(2 * Math.random()) + 12;
-      drawCurve(bCtx, getCurve(0, 0, val, W, H), val, 4);
+      const v = (2 * Math.PI * Math.random()) | 0 + 1 / 8;
+      const a = Math.sin(8 * v) * 23 + 23.95;
+      const b = (Math.cos(3 * v) + 1.3) / 2;
+      drawCurve(bCtx, getCurve(0, 0, W, H, a, b, b / a), v, 4);
       this.moves = this._shuffle(board);
       this._drawTiles();
     }
 
     end() {
       // at the end of the game make sure that the board is sorted
-      // this is necessary when the user gives up.
+      // to display the solution in case the player gives up.
       while (this.moves.length) {
         const m = this.moves.pop();
         [board[m[1]], board[m[0]]] = [board[m[0]], board[m[1]]];
@@ -121,7 +123,7 @@ window.onload = () => {
       ctx.clearRect(0, 0, W, H);
       for (let idx = 0; idx < cols * rows; idx++) {
         const i = (idx % cols) * tileWidth;
-        const j = Math.floor(idx / rows) * tileHeight;
+        const j = ((idx / rows) | 0) * tileHeight;
         drawTile(ctx, i, j, tileWidth, tileHeight);
         // if a tile is flipped, copy from buffer to canvas.
         if (this.flipped[idx]) {
@@ -129,9 +131,9 @@ window.onload = () => {
             i, j, tileWidth, tileHeight);
         }
         // if a tile is flipped and its pair is not flipped,
-        // reset both tiles to unflipped at a "new" third second.
+        // reset both tiles to unflipped on the count of three.
         // maybe not the best idea, but eh
-        const gameTime = Math.floor(frameIdx);
+        const gameTime = frameIdx | 0;
         if (!this.seenSeconds.includes(gameTime) && gameTime % 2 === 0) {
           for (let [k, v] of this.pairs) {
             if (this.flipped[v[0]] !== this.flipped[v[1]]) {
@@ -166,21 +168,21 @@ window.onload = () => {
       bCtx.clearRect(0, 0, W, H);
       // populate the board array with pairs then shuffle it.
       for (let idx = 0; idx < cols * rows; idx++) {
-        const val = Math.floor(idx / 2);
-        board.push(val);
+        board.push((idx / 2) | 0);
       }
       shuffleArray(board);
       // iterate over the shuffled board array and populate the buffer canvas
       // with the drawings of pairs.
       for (let idx = 0; idx < cols * rows; idx++) {
-        const val = board[idx] + 1;
-        if (!this.pairs.get(val)) this.pairs.set(val, []);
-        const pair = this.pairs.get(val);
+        const v = board[idx] + 1;
+        if (!this.pairs.get(v)) this.pairs.set(v, []);
+        const pair = this.pairs.get(v);
         pair.push(idx);
         const i = (idx % cols) * tileWidth;
-        const j = Math.floor(idx / rows) * tileHeight;
-        const pointsArray = getCurve(i, j, val, tileWidth, tileHeight);
-        drawCurve(bCtx, pointsArray, val);
+        const j = ((idx / rows) | 0) * tileHeight;
+        const a = Math.sin(v / 8) * 33 + 33.8;
+        const b = Math.cos(v / 3) * 8 + 8.3;
+        drawCurve(bCtx, getCurve(i, j, tileWidth, tileHeight, a, b, b / a), v);
         this.flipped.push(0);
       }
       this._drawPairs();
@@ -208,13 +210,13 @@ window.onload = () => {
     }
 
     makeMove(i, j) {
-      return Number((((this.thatTile % cols) === i) && (Math.floor(this.thatTile / rows) === j)));
+      return Number((((this.thatTile % cols) === i) && (((this.thatTile / rows) | 0) === j)));
     }
 
     setup() {
       this.playing = true;
       this.seenSeconds = [];
-      this.thatTile = Math.floor(Math.random() * (cols * rows));
+      this.thatTile = (Math.random() * (cols * rows)) | 0;
     }
 
     end() {
@@ -228,23 +230,24 @@ window.onload = () => {
 
     draw() {
       if (!this.playing) return;
-      const gameTime = Math.floor(frameIdx);
-      const val = Math.ceil(10 * Math.random()) + 4;
+      const gameTime = frameIdx | 0;
+      const v = (2 * Math.PI * Math.random()) | 0 + 1 / 4;
+      const a = Math.sin(8 * v) * 32 + 32.5;
+      const b = Math.cos(3 * v) * 8 + 8.3;
       if (!this.seenSeconds.includes(gameTime) && gameTime % 2 === 0) {
         const ii = (this.thatTile % cols) * tileWidth;
-        const jj = Math.floor(this.thatTile / rows) * tileHeight;
+        const jj = ((this.thatTile / rows) | 0) * tileHeight;
         for (let idx = 0; idx < cols * rows; idx++) {
           const i = (idx % cols) * tileWidth;
-          const j = Math.floor(idx / rows) * tileHeight;
+          const j = ((idx / rows) | 0) * tileHeight;
           if (ii === i && jj === j) continue;
-          const points = getCurve(i, j, val, tileWidth, tileHeight);
-          drawCurve(ctx, points, val);
+          drawCurve(ctx, getCurve(i, j, tileWidth, tileHeight, a, b, b / a), v);
         }
-        drawCurve(ctx, getCurve(ii, jj, val - 1, tileWidth, tileHeight), val - 1, 4);
+        drawCurve(ctx, getCurve(ii, jj, tileWidth, tileHeight, a / 2, b / 3, b / a / 4), v - 1, 2);
         this.seenSeconds.push(gameTime);
       } else if (!this.seenSeconds.includes(gameTime) && gameTime % 2 !== 0) {
         ctx.clearRect(0, 0, W, H);
-        this.thatTile = Math.floor(Math.random() * (cols * rows));
+        this.thatTile = (Math.random() * (cols * rows)) | 0;
         this.seenSeconds.push(gameTime);
       }
     }
@@ -296,15 +299,14 @@ window.onload = () => {
     const rect = canvas.getBoundingClientRect();
     const scaleX = W / rect.width;
     const scaleY = H / rect.height;
-    const i = Math.floor(((event.clientX - rect.left) * scaleX) / tileWidth);
-    const j = Math.floor(((event.clientY - rect.top) * scaleY) / tileHeight);
+    const i = (((event.clientX - rect.left) * scaleX) / tileWidth) | 0;
+    const j = (((event.clientY - rect.top) * scaleY) / tileHeight) | 0;
     gameMoves += game.makeMove(i, j);
     counter.textContent = `${gameMoves}`;
   }
 
   function startGame() {
     if (pageTitle.style.visibility != 'hidden') pageTitle.style.visibility = 'hidden';
-
     if (game && game.isPlaying()) stopGame();
     ctx.clearRect(0, 0, W, H);
     bCtx.clearRect(0, 0, W, H);
@@ -351,11 +353,10 @@ window.onload = () => {
     }
   }
   
-  // Fisher-Yates to shuffle the array.
   function shuffleArray(arr) {
     const n = arr.length;
     for (let i = n - 1; i >= 1; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
+      let j = (Math.random() * (i + 1)) | 0;
       j = j > i ? i : j;
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
@@ -383,9 +384,6 @@ window.onload = () => {
     scheduleFrame(start);
   }
 
-  // draws a tile in the provided canvas "c", x-coordinate "x", 
-  // y-coordinate "y", width "w", and height "h". if "fill" is true: 
-  // the tile is filled; if "stroke" is true: the tile has 0.5px border.
   function drawTile(c, x, y, w, h, fill = false, stroke = true, fillColor = "rgb(74,74,74)", strokeColor = "rgb(74,74,74)") {
     c.lineWidth = 1;
     c.fillStyle = fillColor;
@@ -396,31 +394,25 @@ window.onload = () => {
     c.closePath();
   }
 
-  function getCurve(x, y, v, w, h) {
+  function getCurve(x, y, w, h, a, b, c) {
     const xs = [];
     const ys = [];
-    const points = [];
-
-    const a = 180 * v * Math.PI;
-    const b = v / 18;
-    const c = b / 180;
-    
+    const points = [];    
     const xMin = x + w - 4;
     const xMax = x + 4;
     const yMin = y + h - 4;
     const yMax = y + 4;
-
     let xMin1 = xMin;
     let xMax1 = xMax;
     let yMin1 = yMin;
     let yMax1 = yMax;
 
-    for (let t = 0; t < 2 * Math.PI; t += 0.1) {
+    for (let t = 0; t < 2 * Math.PI; t += 1 / 40) {
       xs.push(x);
       ys.push(y);
 
       // starr rose: https://www.reddit.com/r/desmos/comments/k822h1/comment/gevif4i/
-      let r = 2 + .5 * Math.sin(a * t);
+      let r = w * (2 + Math.sin(a * t) / 2);
       let rad = t + Math.sin(b * t) / c;      
       x += r * Math.cos(rad);
       y += r * Math.sin(rad);
@@ -441,16 +433,16 @@ window.onload = () => {
     return points;
   }
 
-  function drawCurve(c, arr, v, lw = 1) {
+  function drawCurve(c, points, v, lw = 1) {
     c.lineWidth = lw;
     c.fillStyle = c.strokeStyle = `rgb(${Math.cos(v / 2) * 75 + 150}, 
       ${Math.sin(v / 4) * 75 + 150}, ${Math.sin(v / 6) * 75 + 150})`;
     const p = new Path2D();
-    arr.forEach((xy, i) => {
+    points.forEach((xy, _) => {
       p.lineTo(xy[0], xy[1]);
     });
     p.closePath();
-    c.stroke(p);
+    c.stroke(p);  
   }
 
   setSize();
