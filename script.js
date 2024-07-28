@@ -79,9 +79,9 @@ window.onload = () => {
       this.finalTile = tiles.pop();
       board.pop();
       board.push(-1);
-      const v = (2 * Math.PI * Math.random()) | 0 + 1 / 8;
-      const a = Math.sin(8 * v) * 23 + 23.95;
-      const b = (Math.cos(3 * v) + 1.3) / 2;
+      const v = ((2 * Math.PI * Math.random()) | 0 + 5 / 8) | 0;
+      const a = (32 * Math.cos(8 * v) + 33) | 0;
+      const b = (9 * Math.sin(3 * v) + 10) | 0;
       drawCurve(bCtx, getCurve(0, 0, W, H, a, b, b / a), v, 4);
       this.moves = this._shuffle(board);
       this._drawTiles();
@@ -180,8 +180,8 @@ window.onload = () => {
         pair.push(idx);
         const i = (idx % cols) * tileWidth;
         const j = ((idx / rows) | 0) * tileHeight;
-        const a = Math.sin(v / 8) * 33 + 33.8;
-        const b = Math.cos(v / 3) * 8 + 8.3;
+        const a = (32 * Math.cos(8 * v) + 33) | 0;
+        const b = (9 * Math.sin(3 * v) + 10) | 0;
         drawCurve(bCtx, getCurve(i, j, tileWidth, tileHeight, a, b, b / a), v);
         this.flipped.push(0);
       }
@@ -232,8 +232,8 @@ window.onload = () => {
       if (!this.playing) return;
       const gameTime = frameIdx | 0;
       const v = (2 * Math.PI * Math.random()) | 0 + 1 / 4;
-      const a = Math.sin(8 * v) * 32 + 32.5;
-      const b = Math.cos(3 * v) * 8 + 8.3;
+      const a = (32 * Math.sin(8 * v) + 33) | 0;
+      const b = (Math.sin(3 * v) * 9 + 10) | 0;
       if (!this.seenSeconds.includes(gameTime) && gameTime % 2 === 0) {
         const ii = (this.thatTile % cols) * tileWidth;
         const jj = ((this.thatTile / rows) | 0) * tileHeight;
@@ -243,7 +243,7 @@ window.onload = () => {
           if (ii === i && jj === j) continue;
           drawCurve(ctx, getCurve(i, j, tileWidth, tileHeight, a, b, b / a), v);
         }
-        drawCurve(ctx, getCurve(ii, jj, tileWidth, tileHeight, a / 2, b / 3, b / a / 4), v - 1, 2);
+        drawCurve(ctx, getCurve(ii, jj, tileWidth, tileHeight, a - 2, b - 3, b / a), v - 1, 2);
         this.seenSeconds.push(gameTime);
       } else if (!this.seenSeconds.includes(gameTime) && gameTime % 2 !== 0) {
         ctx.clearRect(0, 0, W, H);
@@ -407,7 +407,7 @@ window.onload = () => {
     let yMin1 = yMin;
     let yMax1 = yMax;
 
-    for (let t = 0; t < 2 * Math.PI; t += 1 / 40) {
+    for (let t = 0; t < 6 * Math.PI; t += 1 / 20) {
       xs.push(x);
       ys.push(y);
 
@@ -415,7 +415,7 @@ window.onload = () => {
       let r = w * (2 + Math.sin(a * t) / 2);
       let rad = t + Math.sin(b * t) / c;      
       x += r * Math.cos(rad);
-      y += r * Math.sin(rad);
+      y += -r * Math.sin(rad);
 
       if (x > xMax1) xMax1 = x;
       if (x < xMin1) xMin1 = x;
@@ -435,10 +435,12 @@ window.onload = () => {
 
   function drawCurve(c, points, v, lw = 1) {
     c.lineWidth = lw;
-    c.fillStyle = c.strokeStyle = `rgb(${Math.cos(v / 2) * 75 + 150}, 
-      ${Math.sin(v / 4) * 75 + 150}, ${Math.sin(v / 6) * 75 + 150})`;
+    c.fillStyle = c.strokeStyle = `rgba(${Math.cos(v / 2) * 75 + 150}, 
+      ${Math.sin(v / 4) * 75 + 150}, ${Math.sin(v / 6) * 75 + 150}, 0.8)`;
     const p = new Path2D();
+    const s = (Math.sin(v) + 1) / 2 * points.length;
     points.forEach((xy, _) => {
+      p.moveTo(points[s | 0][0], points[s | 0][1]);
       p.lineTo(xy[0], xy[1]);
     });
     p.closePath();
