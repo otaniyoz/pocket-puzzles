@@ -79,10 +79,10 @@ window.onload = () => {
       this.finalTile = tiles.pop();
       board.pop();
       board.push(-1);
-      const v = ((2 * Math.PI * Math.random()) | 0 + 5 / 8) | 0;
-      const a = (32 * Math.cos(8 * v) + 33) | 0;
-      const b = (9 * Math.sin(3 * v) + 10) | 0;
-      drawCurve(bCtx, getCurve(0, 0, W, H, a, b, b / a), v, 4);
+      const v = ((2 * Math.PI * Math.random()) | 0 + 1) | 0;
+      const a = (2 * Math.cos(18 * v) + 35) | 0 + 3;
+      const b = (4 * Math.sin(3 * v) + 12) | 0 + 2;
+      drawCurve(bCtx, getCurve(0, 0, W, H, a, b, 3), v, 4);
       this.moves = this._shuffle(board);
       this._drawTiles();
     }
@@ -180,9 +180,9 @@ window.onload = () => {
         pair.push(idx);
         const i = (idx % cols) * tileWidth;
         const j = ((idx / rows) | 0) * tileHeight;
-        const a = (32 * Math.cos(8 * v) + 33) | 0;
-        const b = (9 * Math.sin(3 * v) + 10) | 0;
-        drawCurve(bCtx, getCurve(i, j, tileWidth, tileHeight, a, b, b / a), v);
+        const a = (32 * Math.cos(12 * v) + 35) | 0;
+        const b = (9 * Math.sin(3 * v) + 11) | 0;
+        drawCurve(bCtx, getCurve(i, j, tileWidth, tileHeight, a, b, v), v);
         this.flipped.push(0);
       }
       this._drawPairs();
@@ -231,9 +231,9 @@ window.onload = () => {
     draw() {
       if (!this.playing) return;
       const gameTime = frameIdx | 0;
-      const v = (2 * Math.PI * Math.random()) | 0 + 1 / 4;
-      const a = (32 * Math.sin(8 * v) + 33) | 0;
-      const b = (Math.sin(3 * v) * 9 + 10) | 0;
+      const v = (2 * Math.PI * Math.random()) | 0 + 2;
+      const a = (32 * Math.cos(12 * v) + 35) | 0 + 2;
+      const b = (9 * Math.sin(3 * v) + 11) | 0 + 3;
       if (!this.seenSeconds.includes(gameTime) && gameTime % 2 === 0) {
         const ii = (this.thatTile % cols) * tileWidth;
         const jj = ((this.thatTile / rows) | 0) * tileHeight;
@@ -241,9 +241,9 @@ window.onload = () => {
           const i = (idx % cols) * tileWidth;
           const j = ((idx / rows) | 0) * tileHeight;
           if (ii === i && jj === j) continue;
-          drawCurve(ctx, getCurve(i, j, tileWidth, tileHeight, a, b, b / a), v);
+          drawCurve(ctx, getCurve(i, j, tileWidth, tileHeight, a, b, v), v);
         }
-        drawCurve(ctx, getCurve(ii, jj, tileWidth, tileHeight, a - 2, b - 3, b / a), v - 1, 2);
+        drawCurve(ctx, getCurve(ii, jj, tileWidth, tileHeight, a - 2, b - 3, v - 1), v - 1, 2);
         this.seenSeconds.push(gameTime);
       } else if (!this.seenSeconds.includes(gameTime) && gameTime % 2 !== 0) {
         ctx.clearRect(0, 0, W, H);
@@ -407,15 +407,13 @@ window.onload = () => {
     let yMin1 = yMin;
     let yMax1 = yMax;
 
-    for (let t = 0; t < 6 * Math.PI; t += 1 / 20) {
+    for (let t = 0; t < 24 * Math.PI; t += 1 / 20) {
       xs.push(x);
       ys.push(y);
-
-      // starr rose: https://www.reddit.com/r/desmos/comments/k822h1/comment/gevif4i/
-      let r = w * (2 + Math.sin(a * t) / 2);
-      let rad = t + Math.sin(b * t) / c;      
-      x += r * Math.cos(rad);
-      y += -r * Math.sin(rad);
+      let scl = w*(1 - t / 16);
+      // Guilloché patterns
+      x += Math.round(((a*a*Math.cos(t)) + (b*Math.sin(c*t))) * scl);
+			y += Math.round(((a*Math.sin(t)) - (b*Math.sin(c*t))) * scl);
 
       if (x > xMax1) xMax1 = x;
       if (x < xMin1) xMin1 = x;
@@ -435,15 +433,15 @@ window.onload = () => {
 
   function drawCurve(c, points, v, lw = 1) {
     c.lineWidth = lw;
-    c.fillStyle = c.strokeStyle = `rgba(${Math.cos(v / 2) * 75 + 150}, 
-      ${Math.sin(v / 4) * 75 + 150}, ${Math.sin(v / 6) * 75 + 150}, 0.8)`;
+    c.fillStyle = c.strokeStyle = `rgb(${Math.cos(v / 2) * 75 + 150}, 
+      ${Math.sin(v / 4) * 75 + 150}, ${Math.sin(v / 6) * 75 + 150})`;
     const p = new Path2D();
     const s = (Math.sin(v) + 1) / 2 * points.length;
     points.forEach((xy, _) => {
-      p.moveTo(points[s | 0][0], points[s | 0][1]);
+      // p.moveTo(points[s | 0][0], points[s | 0][1]);
       p.lineTo(xy[0], xy[1]);
     });
-    p.closePath();
+    // p.closePath();
     c.stroke(p);  
   }
 
