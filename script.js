@@ -436,12 +436,9 @@ window.onload = () => {
     c.fillStyle = c.strokeStyle = `rgb(${Math.cos(v / 2) * 75 + 150}, 
       ${Math.sin(v / 4) * 75 + 150}, ${Math.sin(v / 6) * 75 + 150})`;
     const p = new Path2D();
-    const s = (Math.sin(v) + 1) / 2 * points.length;
     points.forEach((xy, _) => {
-      // p.moveTo(points[s | 0][0], points[s | 0][1]);
       p.lineTo(xy[0], xy[1]);
     });
-    // p.closePath();
     c.stroke(p);
   }
 
