@@ -398,10 +398,10 @@ window.onload = () => {
     const xs = [];
     const ys = [];
     const points = [];    
-    const xMin = x + w - 4;
-    const xMax = x + 4;
-    const yMin = y + h - 4;
-    const yMax = y + 4;
+    const xMin = x + .98*w;
+    const xMax = x + .02*w;
+    const yMin = y + .98*h;
+    const yMax = y + .02*h;
     let xMin1 = xMin;
     let xMax1 = xMax;
     let yMin1 = yMin;
@@ -442,7 +442,7 @@ window.onload = () => {
       p.lineTo(xy[0], xy[1]);
     });
     // p.closePath();
-    c.stroke(p);  
+    c.stroke(p);
   }
 
   setSize();
@@ -464,4 +464,10 @@ window.onload = () => {
   });
   diffSlider.addEventListener('change', startGame);
   canvas.addEventListener('pointerdown', mousePress);
+
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.register('/pocket-puzzles/sw.js', {
+      scope: '/pocket-puzzles/'
+    });
+  }
 };
