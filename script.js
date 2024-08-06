@@ -600,29 +600,29 @@ window.onload = () => {
     endGameButton.classList.remove('clickback');  
   });
   diffSlider.addEventListener('change', startGame);
-  canvas.addEventListener('pointerdown', () => {
+  canvas.addEventListener('pointerdown', (e) => {
     // do not register move if the game is not on.
     if (!canvas || !game || !game.isPlaying()) return;
     const rect = canvas.getBoundingClientRect();
     const scaleX = W / rect.width;
     const scaleY = H / rect.height;
-    const i = (((event.clientX - rect.left) * scaleX) / tileWidth) | 0;
-    const j = (((event.clientY - rect.top) * scaleY) / tileHeight) | 0;
+    const i = (((e.clientX - rect.left) * scaleX) / tileWidth) | 0;
+    const j = (((e.clientY - rect.top) * scaleY) / tileHeight) | 0;
     gameMoves += game.makeMove(i, j);
     counter.textContent = `${gameMoves}`;
   });
-  canvas.addEventListener('touchstart', () => {
+  canvas.addEventListener('touchstart', (e) => {
     if (!canvas || !game || !game.isPlaying()) return;
-    swipeX0 = event.touches[0].clientX;
-    swipeY0 = event.touches[0].clientY;
+    swipeX0 = e.touches[0].clientX;
+    swipeY0 = e.touches[0].clientY;
     swipeT0 = Date.now();
   });
-  canvas.addEventListener('touchend', () => {
+  canvas.addEventListener('touchend', (e) => {
     const swipeX1 = e.touches[0].clientX;
     const swipeY1 = e.touches[0].clientY;
     const swipeT1 = Date.now();
     if (swipeT1 - swipeT0 < swipeDuration) {
-      event.preventDefault(); // prevent page reload on swipe down
+      e.preventDefault(); // prevent page reload on swipe down
       gameMoves += game.makeMove(swipeX1 - swipeX0, swipeY1 - swipeY0);
       counter.textContent = `${gameMoves}`;
     }
