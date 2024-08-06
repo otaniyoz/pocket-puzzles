@@ -115,7 +115,7 @@ input[type="radio"]:checked+label {
 
 button {
   flex: 2 2 100%;
-  padding: var(--large-gap);
+  padding: var(--xlarge-gap);
   color: var(--black-light);
   border-radius: var(--radius);
   font-family: "IBM Plex Sans";
@@ -140,9 +140,10 @@ fieldset {
 label {
   flex: 2 2 100%;
   text-align: center;
+  line-height: 0.9em;
   align-items: center;
   justify-content: center;
-  padding: var(--large-gap);
+  padding: var(--xlarge-gap);
   border-radius: var(--radius);
   font-weight: var(--bold-weight);
   font-size: var(--font-size-regular);

@@ -1,10 +1,155 @@
 "use strict";
 window.onload = () => {
+  class MergePuzzle {
+    constructor() {
+      this.playing = true;
+      this.moves = [];
+    }
+
+    _drawTiles() {
+      for (let idx = 0; idx < cols * rows; idx++) {
+        const i = idx % cols;
+        const j = (idx / rows) | 0;
+        const v = board[j][i];
+        if (v === 0) {
+          drawTile(ctx, i * tileWidth, j * tileHeight, tileWidth, tileHeight);
+          continue;
+        }
+        drawTile(ctx, i * tileWidth, j * tileHeight, tileWidth, tileHeight);
+        drawCurve(ctx, getCurve(i * tileWidth, j * tileHeight, tileWidth, tileHeight, cols * 4.4, rows * 1.4, v + 2), v);
+      }
+    }
+
+    makeMove(dx, dy) {
+      const THRESHOLD_X = 0.5 * tileWidth | 0;
+      const THRESHOLD_Y = 0.5 * tileHeight | 0;
+
+      if (dx < -THRESHOLD_X) {
+        this.moves.push('R');
+        for (let i = 0; i < rows; i++) {
+          board[i] = board[i].filter((el, i) => el !== 0);
+          while (board[i].length < rows) board[i].unshift(0);
+          for (let j = cols - 1; j > -1; j--) {
+            let y = j - 1;
+            if (board[i][j] === board[i][y]) {
+              board[i][j] += board[i][y];
+              board[i][y] = 0;
+            }
+          }
+          board[i] = board[i].filter((el, i) => el !== 0);
+          while (board[i].length < rows) board[i].unshift(
+            (Math.random() > 0.4) ? 0 : (Math.random() * Math.max.apply(null, board.flat())) | 0);
+        }
+      }
+      else if (dx > THRESHOLD_X) {
+        this.moves.push('L');
+        for (let i = 0; i < rows; i++) {
+          board[i] = board[i].filter((el, i) => el !== 0);
+          while (board[i].length < rows) board[i].push(0);
+          for (let j = cols - 2; j > -1; j--) {
+            let y = j + 1;
+            if (board[i][j] === board[i][y]) {
+              board[i][j] += board[i][y];
+              board[i][y] = 0;
+            }
+          }
+          board[i] = board[i].filter((el, i) => el !== 0);
+          while (board[i].length < rows) board[i].push((Math.random() > 0.4) ? 0 : (Math.random() * Math.max.apply(null, board.flat())) | 0);
+        }
+      }
+      else if (dy > THRESHOLD_Y) {
+        this.moves.push('U');
+        for (let j = 0; j < cols; j++) {
+          let col = [];
+          for (let i = 0; i < rows; i++) 
+            if (board[i][j] !== 0) col.push(board[i][j]);
+          for (let i = 0; i < rows; i++) {
+            if (col.length) board[i][j] = col.shift();
+            else board[i][j] = 0;
+          }
+
+          for (let i = 0; i < rows - 1; i++) {
+            let x = i + 1;
+            if (board[i][j] === board[x][j]) {
+              board[i][j] += board[x][j];
+              board[x][j] = 0;
+            }
+          }
+
+          for (let i = 0; i < rows; i++) 
+            if (board[i][j] !== 0) col.push(board[i][j]);
+          for (let i = 0; i < rows; i++) {
+            if (col.length) board[i][j] = col.shift();
+            else board[i][j] = (Math.random() > 0.4) ? 0 : (Math.random() * Math.max.apply(null, board.flat())) | 0;
+          }
+        }
+      }
+      else if (dy < -THRESHOLD_Y) {
+        this.moves.push('D');
+        for (let j = 0; j < cols; j++) {
+          let col = [];
+          for (let i = rows - 1; i > -1; i--) 
+            if (board[i][j] !== 0) col.push(board[i][j]);
+          for (let i = rows - 1; i > -1; i--) {
+            if (col.length) board[i][j] = col.shift();
+            else board[i][j] = 0;
+          }
+
+          for (let i = rows - 1; i > 0; i--) {
+            let x = i - 1;
+            if (board[i][j] === board[x][j]) {
+              board[i][j] += board[x][j];
+              board[x][j] = 0;
+            }
+          }
+
+          for (let i = rows - 1; i > -1; i--) 
+            if (board[i][j] !== 0) col.push(board[i][j]);
+          for (let i = rows - 1; i > -1; i--) {
+            if (col.length) board[i][j] = col.shift();
+            else board[i][j] = (Math.random() > 0.4) ? 0 : (Math.random() * Math.max.apply(null, board.flat())) | 0;
+          }
+        }
+      }
+      else return 0;
+      return 1;
+    }
+
+    setup() {
+      board = [];
+      for (let i = 0; i < rows; i++) {
+        board.push([])
+        for (let j = 0; j < cols; j++) {
+          if (Math.random() > 0.4) board[i].push(0);
+          else board[i].push(2);
+        }
+      }
+      this._drawTiles();
+    }
+
+    end() {
+      this.playing = false;
+    }
+
+    isPlaying() {
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          if (board[i][j] === 2048) return false;
+        }
+      }
+      return true;
+    }
+
+    draw() {
+      if (!this.playing) return;
+      ctx.clearRect(0, 0, W, H);
+      this._drawTiles();
+    }
+  }
+
   class SlidePuzzle {
     constructor() {
       this.moves = [];
-      this.particles = [];
-      this.seenSeconds = [];
       this.finalTile;
     }
 
@@ -65,8 +210,6 @@ window.onload = () => {
 
     setup() {
       this.moves = [];
-      this.particles = [];
-      this.seenSeconds = [];
       for (let idx = 0; idx < cols * rows; idx++) {
         const tile = new Map([
           ["index", idx],
@@ -241,12 +384,18 @@ window.onload = () => {
           const i = (idx % cols) * tileWidth;
           const j = ((idx / rows) | 0) * tileHeight;
           if (ii === i && jj === j) continue;
+          drawTile(ctx, i, j, tileWidth, tileHeight);
           drawCurve(ctx, getCurve(i, j, tileWidth, tileHeight, a, b, v), v);
         }
         drawCurve(ctx, getCurve(ii, jj, tileWidth, tileHeight, a - 2, b - 3, v - 1), v - 1, 2);
         this.seenSeconds.push(gameTime);
       } else if (!this.seenSeconds.includes(gameTime) && gameTime % 2 !== 0) {
         ctx.clearRect(0, 0, W, H);
+        for (let idx = 0; idx < cols * rows; idx++) {
+          const i = (idx % cols) * tileWidth;
+          const j = ((idx / rows) | 0) * tileHeight;
+          drawTile(ctx, i, j, tileWidth, tileHeight);
+        }
         this.thatTile = (Math.random() * (cols * rows)) | 0;
         this.seenSeconds.push(gameTime);
       }
@@ -266,7 +415,7 @@ window.onload = () => {
   const buffer = document.createElement("canvas");
   const bCtx = buffer.getContext("2d", { alpha: "false" });
 
-  const games = [new SlidePuzzle(), new PairsPuzzle(), new ThatTilePuzzle()];
+  const games = [new MergePuzzle(), new SlidePuzzle(), new PairsPuzzle(), new ThatTilePuzzle()];
 
   let W;
   let H;
@@ -293,7 +442,7 @@ window.onload = () => {
     H = canvas.height;
   }
 
-  function mousePress(event) {
+  function touchHandler(event) {
     // do not register move if the game is not on.
     if (!canvas || !game || !game.isPlaying()) return;
     const rect = canvas.getBoundingClientRect();
@@ -303,6 +452,21 @@ window.onload = () => {
     const j = (((event.clientY - rect.top) * scaleY) / tileHeight) | 0;
     gameMoves += game.makeMove(i, j);
     counter.textContent = `${gameMoves}`;
+  }
+
+  function swipeHandler(event) {
+    if (!canvas || !game || !game.isPlaying()) return;
+    const THRESHOLD_DURATION = 200;
+    const touch = event.touches[0];
+    const startX = touch.clientX;
+    const startY = touch.clientY;
+    const duration = event.elapsedTime;
+    const endX = event.changedTouches[0].clientX;
+    const endY = event.changedTouches[0].clientY;
+    if (duration < THRESHOLD_DURATION) {
+      gameMoves += game.makeMove(Math.abs(endY - startY), Math.abs(endX - startX));
+      counter.textContent = `${gameMoves}`;
+    }
   }
 
   function startGame() {
@@ -460,7 +624,9 @@ window.onload = () => {
     endGameButton.classList.remove('clickback');  
   });
   diffSlider.addEventListener('change', startGame);
-  canvas.addEventListener('pointerdown', mousePress);
+  canvas.addEventListener('pointerdown', touchHandler);
+  canvas.addEventListener('touchstart', swipeHandler);
+  canvas.addEventListener('touchend', swipeHandler);
 
   if (navigator.serviceWorker) {
     navigator.serviceWorker.register('/pocket-puzzles/sw.js', {
