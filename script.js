@@ -21,7 +21,7 @@ window.onload = () => {
     }
 
     makeMove(dx, dy) {
-      if (dx < -swipeDistance) {
+      if (dx > swipeDistance) {
         this.moves.push('R');
         for (let i = 0; i < rows; i++) {
           board[i] = board[i].filter((el, i) => el !== 0);
@@ -38,7 +38,7 @@ window.onload = () => {
             (Math.random() > 0.4) ? 0 : (Math.random() * Math.max.apply(null, board.flat())) | 0);
         }
       }
-      else if (dx > swipeDistance) {
+      else if (dx < -swipeDistance) {
         this.moves.push('L');
         for (let i = 0; i < rows; i++) {
           board[i] = board[i].filter((el, i) => el !== 0);
@@ -54,7 +54,7 @@ window.onload = () => {
           while (board[i].length < rows) board[i].push((Math.random() > 0.4) ? 0 : (Math.random() * Math.max.apply(null, board.flat())) | 0);
         }
       }
-      else if (dy > swipeDistance) {
+      else if (dy < -swipeDistance) {
         this.moves.push('U');
         for (let j = 0; j < cols; j++) {
           let col = [];
@@ -81,7 +81,7 @@ window.onload = () => {
           }
         }
       }
-      else if (dy < -swipeDistance) {
+      else if (dy > swipeDistance) {
         this.moves.push('D');
         for (let j = 0; j < cols; j++) {
           let col = [];
@@ -129,7 +129,7 @@ window.onload = () => {
     }
 
     isPlaying() {
-      if (!board.some(b => b.includes(0))) return false;
+      //if (!board.some(b => b.includes(0))) return false;
 
       for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
@@ -629,7 +629,6 @@ window.onload = () => {
   canvas.addEventListener('touchend', (e) => {
     if (!canvas || !game || !game.isPlaying()) return;
     const swipeT1 = Date.now();
-    console.log(swipeT1 - swipeT0);
     if (swipeT1 - swipeT0 < swipeDuration) {
       e.preventDefault(); // prevent page reload on swipe down
       gameMoves += game.makeMove(swipeX1 - swipeX0, swipeY1 - swipeY0);
