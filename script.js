@@ -129,6 +129,8 @@ window.onload = () => {
     }
 
     isPlaying() {
+      if (!board.some(b => b.includes(0))) return false;
+
       for (let i = 0; i < cols; i++) {
         for (let j = 0; j < rows; j++) {
           if (board[i][j] === 2048) return false;
@@ -429,7 +431,9 @@ window.onload = () => {
   let cols = (diffValue + 1) * 2;
   let rows = (diffValue + 1) * 2;
   let swipeX0;
+  let swipeX1;
   let swipeY0;
+  let swipeY1;
   let swipeT0;
   let swipeDistance;
   let swipeDuration = 200;
@@ -617,10 +621,15 @@ window.onload = () => {
     swipeY0 = e.touches[0].clientY;
     swipeT0 = Date.now();
   });
+  canvas.addEventListener('touchmove', (e) => {
+    if (!canvas || !game || !game.isPlaying()) return;
+    swipeX1 = e.touches[0].clientX;
+    swipeY1 = e.touches[0].clientY;
+  });
   canvas.addEventListener('touchend', (e) => {
-    const swipeX1 = e.touches[0].clientX;
-    const swipeY1 = e.touches[0].clientY;
+    if (!canvas || !game || !game.isPlaying()) return;
     const swipeT1 = Date.now();
+    console.log(swipeT1 - swipeT0);
     if (swipeT1 - swipeT0 < swipeDuration) {
       e.preventDefault(); // prevent page reload on swipe down
       gameMoves += game.makeMove(swipeX1 - swipeX0, swipeY1 - swipeY0);
