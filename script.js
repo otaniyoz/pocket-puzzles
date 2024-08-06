@@ -21,10 +21,7 @@ window.onload = () => {
     }
 
     makeMove(dx, dy) {
-      const THRESHOLD_X = 0.5 * tileWidth | 0;
-      const THRESHOLD_Y = 0.5 * tileHeight | 0;
-
-      if (dx < -THRESHOLD_X) {
+      if (dx < -swipeDistance) {
         this.moves.push('R');
         for (let i = 0; i < rows; i++) {
           board[i] = board[i].filter((el, i) => el !== 0);
@@ -41,7 +38,7 @@ window.onload = () => {
             (Math.random() > 0.4) ? 0 : (Math.random() * Math.max.apply(null, board.flat())) | 0);
         }
       }
-      else if (dx > THRESHOLD_X) {
+      else if (dx > swipeDistance) {
         this.moves.push('L');
         for (let i = 0; i < rows; i++) {
           board[i] = board[i].filter((el, i) => el !== 0);
@@ -57,7 +54,7 @@ window.onload = () => {
           while (board[i].length < rows) board[i].push((Math.random() > 0.4) ? 0 : (Math.random() * Math.max.apply(null, board.flat())) | 0);
         }
       }
-      else if (dy > THRESHOLD_Y) {
+      else if (dy > swipeDistance) {
         this.moves.push('U');
         for (let j = 0; j < cols; j++) {
           let col = [];
@@ -84,7 +81,7 @@ window.onload = () => {
           }
         }
       }
-      else if (dy < -THRESHOLD_Y) {
+      else if (dy < -swipeDistance) {
         this.moves.push('D');
         for (let j = 0; j < cols; j++) {
           let col = [];
@@ -431,6 +428,11 @@ window.onload = () => {
   let timeController = true;
   let cols = (diffValue + 1) * 2;
   let rows = (diffValue + 1) * 2;
+  let swipeX0;
+  let swipeY0;
+  let swipeT0;
+  let swipeDuration;
+  let swipeDistance;
 
   function setSize() {
     // scale canvas dimensions.
@@ -440,33 +442,7 @@ window.onload = () => {
     buffer.height = canvas.height;
     W = canvas.width;
     H = canvas.height;
-  }
-
-  function touchHandler(event) {
-    // do not register move if the game is not on.
-    if (!canvas || !game || !game.isPlaying()) return;
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = W / rect.width;
-    const scaleY = H / rect.height;
-    const i = (((event.clientX - rect.left) * scaleX) / tileWidth) | 0;
-    const j = (((event.clientY - rect.top) * scaleY) / tileHeight) | 0;
-    gameMoves += game.makeMove(i, j);
-    counter.textContent = `${gameMoves}`;
-  }
-
-  function swipeHandler(event) {
-    if (!canvas || !game || !game.isPlaying()) return;
-    const THRESHOLD_DURATION = 200;
-    const touch = event.touches[0];
-    const startX = touch.clientX;
-    const startY = touch.clientY;
-    const duration = event.elapsedTime;
-    const endX = event.changedTouches[0].clientX;
-    const endY = event.changedTouches[0].clientY;
-    if (duration < THRESHOLD_DURATION) {
-      gameMoves += game.makeMove(Math.abs(endY - startY), Math.abs(endX - startX));
-      counter.textContent = `${gameMoves}`;
-    }
+    swipeDistance = (0.5 * W) | 0;
   }
 
   function startGame() {
@@ -624,9 +600,33 @@ window.onload = () => {
     endGameButton.classList.remove('clickback');  
   });
   diffSlider.addEventListener('change', startGame);
-  canvas.addEventListener('pointerdown', touchHandler);
-  canvas.addEventListener('touchstart', swipeHandler);
-  canvas.addEventListener('touchend', swipeHandler);
+  canvas.addEventListener('pointerdown', () => {
+    // do not register move if the game is not on.
+    if (!canvas || !game || !game.isPlaying()) return;
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = W / rect.width;
+    const scaleY = H / rect.height;
+    const i = (((event.clientX - rect.left) * scaleX) / tileWidth) | 0;
+    const j = (((event.clientY - rect.top) * scaleY) / tileHeight) | 0;
+    gameMoves += game.makeMove(i, j);
+    counter.textContent = `${gameMoves}`;
+  });
+  canvas.addEventListener('touchstart', () => {
+    if (!canvas || !game || !game.isPlaying()) return;
+    swipeX0 = event.touches[0].clientX;
+    swipeY0 = event.touches[0].clientY;
+    swipeT0 = Date.now();
+  });
+  canvas.addEventListener('touchend', () => {
+    const swipeX1 = e.touches[0].clientX;
+    const swipeY1 = e.touches[0].clientY;
+    const swipeT1 = Date.now();
+    if (swipeT1 - swipeT0 < swipeDuration) {
+      event.preventDefault(); // prevent page reload on swipe down
+      gameMoves += game.makeMove(swipeX1 - swipeX0, swipeY1 - swipeY0);
+      counter.textContent = `${gameMoves}`;
+    }
+  });
 
   if (navigator.serviceWorker) {
     navigator.serviceWorker.register('/pocket-puzzles/sw.js', {
