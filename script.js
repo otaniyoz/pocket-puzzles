@@ -431,9 +431,9 @@ window.onload = () => {
   let swipeX0;
   let swipeY0;
   let swipeT0;
-  let swipeDuration;
   let swipeDistance;
-
+  let swipeDuration = 200;
+  
   function setSize() {
     // scale canvas dimensions.
     canvas.width = canvas.offsetWidth;
@@ -442,7 +442,7 @@ window.onload = () => {
     buffer.height = canvas.height;
     W = canvas.width;
     H = canvas.height;
-    swipeDistance = (0.5 * W) | 0;
+    swipeDistance = (0.2 * W) | 0;
   }
 
   function startGame() {
