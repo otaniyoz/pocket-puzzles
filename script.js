@@ -414,7 +414,7 @@ window.onload = () => {
   const buffer = document.createElement("canvas");
   const bCtx = buffer.getContext("2d", { alpha: "false" });
 
-  const games = [new MergePuzzle(), new SlidePuzzle(), new PairsPuzzle(), new ThatTilePuzzle()];
+  const games = [new SlidePuzzle(), new PairsPuzzle(), new ThatTilePuzzle()];
 
   let W;
   let H;
