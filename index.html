@@ -12,37 +12,31 @@
   <title>Pocket puzzles</title>
 </head>
 
-<body class="no-margin">
-  <main>
-    <h3 id="page-title" class="no-margin">Pocket <span class="page-title-grid no-margin"><span class="blue-p page-title-blue">p</span><span class="blue-u page-title-blue">u</span><span class="blue-z1 page-title-blue">z</span><span class="blue-z2 page-title-blue">z</span><span class="blue-l page-title-blue">l</span><span class="blue-e page-title-blue">e</span><span class="blue-s page-title-blue">s</span><span class="green-p page-title-green">p</span><span class="green-u page-title-green">u</span><span class="green-z1 page-title-green">z</span><span class="green-z2 page-title-green">z</span><span class="green-l page-title-green">l</span><span class="green-e page-title-green">e</span><span class="green-s page-title-green">s</span><span class="orange-p page-title-orange">p</span><span class="orange-u page-title-orange">u</span><span class="orange-z1 page-title-orange">z</span><span class="orange-z2 page-title-orange">z</span><span class="orange-l page-title-orange">l</span><span class="orange-e page-title-orange">e</span><span class="orange-s page-title-orange">s</span></span></h3>
-    <canvas id="puzzle-canvas" class="full-width"></canvas>
-  </main> 
-  <aside>
-    <fieldset id="puzzle-title-container" class="no-border no-margin no-padding full-width flex-row">
-      <!-- <input id="merge-tiles" type="radio" name="puzzle-title" value="0" checked />
-      <label for="merge-tiles" class="no-border flex-row">Merge</label> -->
-      <input id="sliding-tiles" type="radio" name="puzzle-title" value="0" checked/>
-      <label for="sliding-tiles" class="no-border flex-row">Slide!</label>
-      <input id="pair-tiles" type="radio" name="puzzle-title" value="1" />
-      <label for="pair-tiles" class="no-border flex-row">Pairs</label>
-      <input id="that-tile" type="radio" name="puzzle-title" value="2" />
-      <label for="that-tile" class="no-border flex-row">That tile</label>
-    </fieldset>
-    <div id="puzzle-control-misc" class="puzzle-controls-container flex-row">
-      <div id="level-container" class="puzzle-control flex-column">
-        <p id="puzzle-level" class="no-margin no-padding">Difficulty</p>
-        <input class="no-margin no-padding full-width" id="level" type="range" min="0" max="4" step="2" value="0" />
-      </div>
-      <div id="counter-container" class="puzzle-control flex-column">
-        <p id="puzzle-counter" class="no-margin no-padding">Moves</p>
-        <p id="counter" class="no-margin">0</p>
+<body class="main-container">
+  <main class="main">
+    <div class="title-container">
+      <div id="title" class="title"></div>
+    </div>
+    <div class="puzzle-wrapper">
+      <canvas id="puzzle-canvas" class="pocket-puzzles-canvas"></canvas>
+      <div>
+        <div id="puzzle-title-container" class="puzzle-title-container">
+          <button id="slide" data-value="0" data-selected="true" class="button puzzle-title">Slide</button>
+          <button id="pairs" data-value="1" data-selected="false" class="button puzzle-title">Pairs</button>
+          <button id="that" data-value="2" data-selected="false" class="button puzzle-title" >That</button>
+        </div>
+        <div id="puzzle-level-container" class="puzzle-level-container">
+          <button id="easy" data-value="0" data-selected="true" class="button puzzle-level">Easy</button>
+          <button id="medium" data-value="1" data-selected="false" class="button puzzle-level">Medium</button>
+          <button id="hard" data-value="2" data-selected="false" class="button puzzle-level">Hard</button>
+        </div>
+        <div id="puzzle-control-container" class="puzzle-control-container">
+          <button id="stop" data-value="0" data-selected="false" class="button puzzle-state" data-selected="false">Give up</button>
+          <button id="play" data-value="1" data-selected="true" class="button puzzle-state" data-selected="selected">Play</button>
+        </div>
       </div>
     </div>
-    <div id="puzzle-control-buttons" class="puzzle-controls-container flex-row">
-      <button id="puzzle-end" class="no-border">Give up</button>
-      <button id="puzzle-start" class="no-border">Start</button>
-    </div>
-  </aside>
+  </main>
 </body>
 
 </html>

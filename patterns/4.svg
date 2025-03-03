@@ -1,0 +1,17 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="64" height="64" fill="#FBF8EF"/>
+<rect width="58" height="58" transform="matrix(0 -1 1 0 3 61)" fill="#F2995A"/>
+<path d="M58 42V58H42L58 42Z" fill="#FBF8EF"/>
+<path d="M42 6H58V22L42 6Z" fill="#FBF8EF"/>
+<path d="M22 6H6V22L22 6Z" fill="#FBF8EF"/>
+<path d="M22 58H6V42L22 58Z" fill="#FBF8EF"/>
+<rect x="23.8086" y="10.5863" width="16" height="16" rx="8" fill="#FBF8EF"/>
+<rect x="41" y="11" width="16" height="16" rx="8" transform="rotate(42.3443 41 11)" fill="#FBF8EF"/>
+<rect x="23.8086" y="37.5863" width="16" height="16" rx="8" fill="#FBF8EF"/>
+<rect x="22" y="30.0863" width="16" height="16" rx="8" transform="rotate(42.3443 22 30.0863)" fill="#FBF8EF"/>
+<rect x="53.3086" y="24.0863" width="16" height="16" rx="8" transform="rotate(90 53.3086 24.0863)" fill="#FBF8EF"/>
+<rect x="53" y="41.0863" width="16" height="16" rx="8" transform="rotate(132.344 53 41.0863)" fill="#FBF8EF"/>
+<rect x="26.3086" y="24.0863" width="16" height="16" rx="8" transform="rotate(90 26.3086 24.0863)" fill="#FBF8EF"/>
+<rect x="34" y="22" width="16" height="16" rx="8" transform="rotate(132.344 34 22)" fill="#FBF8EF"/>
+<rect x="24" y="24" width="16" height="16" rx="8" fill="#F2995A"/>
+</svg>
