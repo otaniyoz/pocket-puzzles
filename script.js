@@ -251,6 +251,7 @@ window.onload = () => {
   let board = [];
   let tiles = [];
   const sounds = [];
+  const audioContext = new AudioContext();
   const patterns = [];
   let frameIdx = 0;
   let gameMoves = 0;
@@ -324,7 +325,7 @@ window.onload = () => {
     const move = game.makeMove(i, j);
     if (move) {
       gameMoves += move;
-      sounds[settings.gameIndex].play();
+      playSound(settings.gameIndex);
     }
   }
 
@@ -468,12 +469,30 @@ window.onload = () => {
     shuffleArray(patterns);
   }
 
-  function initSounds() {
-    for (let i = 0; i < 3; i++) {
-      const sound = document.createElement('audio');
-      sound.src = `sounds/${i}.mp3`;
-      sounds.push(sound);
+  function playSound(index) {
+    if (index >= 0 && index < sounds.length) {
+      const source = audioContext.createBufferSource();
+      source.buffer = sounds[index];
+      source.connect(audioContext.destination);
+      source.start();
     }
+    else {
+      console.error('Invalid sound index');
+    }
+  }
+
+
+  async function initSounds() {
+    for (let i = 0; i < 3; i++) {
+      const buffer = await loadSoundBuffer(`sounds/${i}.mp3`);
+      sounds.push(buffer);
+    }
+  }
+
+  async function loadSoundBuffer(url) {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    return await audioContext.decodeAudioData(arrayBuffer);
   }
 
   updateDynamicTitle();
