@@ -17,7 +17,6 @@ window.onload = () => {
           continue;
         }
         
-        bufferContext.drawImage(canvas, i, j, tileWidth, tileHeight, tiles[tile].get('x'), tiles[tile].get('y'), tileWidth, tileHeight);
         context.drawImage(buffer, tiles[tile].get('x'), tiles[tile].get('y'), tileWidth, tileHeight, i, j, tileWidth, tileHeight);
       }
     }

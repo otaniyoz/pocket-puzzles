@@ -2,7 +2,7 @@ self.addEventListener('install', function(event) {
   if (self.skipWaiting) { self.skipWaiting(); }
 
   event.waitUntil(
-    caches.open('pocket-puzzles-sw-v2').then(function(cache) {
+    caches.open('pocket-puzzles-sw-v3').then(function(cache) {
       return cache.addAll([
         '/pocket-puzzles/',
         '/pocket-puzzles/style.css',
