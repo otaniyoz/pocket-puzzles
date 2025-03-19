@@ -13,7 +13,7 @@ window.onload = () => {
         const j = ((idx / rows) | 0) * tileHeight;
 
         if (tile === -1) {
-          drawTile(context, i, j, tileWidth, tileHeight, {fill: true, stroke: false, fillColor: 'rgb(74,74,74)'});
+          drawTile(context, i, j, tileWidth, tileHeight, {fill: true, stroke: false, fillColor: 'rgb(11,11,11)'});
           continue;
         }
         
