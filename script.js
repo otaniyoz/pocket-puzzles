@@ -494,6 +494,16 @@ window.onload = () => {
     return await audioContext.decodeAudioData(arrayBuffer);
   }
 
+  function fitScreen() {
+    const deltaHeight = window.innerHeight - document.documentElement.scrollHeight;
+    if (deltaHeight < 0) {
+      const styles = window.getComputedStyle(document.body, null);
+      document.body.style.paddingLeft = `${parseFloat(styles.paddingLeft) - deltaHeight / 2}px`;
+      document.body.style.paddingRight = `${parseFloat(styles.paddingRight) - deltaHeight / 2}px`;
+    }
+  }
+
+  fitScreen();
   updateDynamicTitle();
   initButtonListeners();
   loadPatterns();

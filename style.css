@@ -85,6 +85,7 @@ html {
 }
 
 .button {
+  color: var(--black-light);
   flex: 2 2 100%;
   min-height: 40px;
   text-align: center;
