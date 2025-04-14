@@ -244,6 +244,8 @@ window.onload = () => {
   const buffer = document.createElement('canvas');
   const context = canvas.getContext('2d', { alpha: 'false' });
   const bufferContext = buffer.getContext('2d', { alpha: 'false' });
+  context.imageSmoothingEnabled = false;
+  bufferContext.imageSmoothingEnabled = false;
 
   let timer;
   let ratio = 2;
