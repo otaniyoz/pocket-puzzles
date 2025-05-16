@@ -12,31 +12,84 @@
   <title>Pocket puzzles</title>
 </head>
 
-<body class="main-container">
+<body>
   <main class="main">
-    <div class="title-container">
-      <div id="title" class="title"></div>
+    <div class="page-title-container">
+      <div id="page-title" class="page-title"></div>
+      <div class="player">
+      </div>
     </div>
     <div class="puzzle-wrapper">
-      <canvas id="puzzle-canvas" class="pocket-puzzles-canvas"></canvas>
-      <div>
-        <div id="puzzle-title-container" class="puzzle-title-container">
-          <button id="slide" data-value="0" data-selected="true" class="button puzzle-title">Slide</button>
-          <button id="pairs" data-value="1" data-selected="false" class="button puzzle-title">Pairs</button>
-          <button id="that" data-value="2" data-selected="false" class="button puzzle-title" >That</button>
+      <canvas id="canvas"></canvas>
+      <canvas id="buffer"></canvas>
+      <div id="buttons" class="buttons">
+        <div id="title-container" class="title-container">
+          <input id="slide" name="title" type="radio" value="0" checked/>
+          <label for="slide" class="title">Slide</label>
+          <input id="pairs" name="title" type="radio" value="1" />
+          <label for="pairs" class="title">Pairs</label>
+          <input id="that" name="title" type="radio" value="2" />
+          <label for="that" class="title">That</label>
         </div>
-        <div id="puzzle-level-container" class="puzzle-level-container">
-          <button id="easy" data-value="0" data-selected="true" class="button puzzle-level">Easy</button>
-          <button id="medium" data-value="1" data-selected="false" class="button puzzle-level">Medium</button>
-          <button id="hard" data-value="2" data-selected="false" class="button puzzle-level">Hard</button>
+        <div id="level-container" class="level-container">
+          <input id="easy" name="level" type="radio" value="0" checked/>
+          <label for="easy" class="level">Easy</label>
+          <input id="medium" name="level" type="radio" value="1" />
+          <label for="medium" class="level">Medium</label>
+          <input id="hard" name="level" type="radio" value="2" />
+          <label for="hard" class="level">Hard</label>
         </div>
-        <div id="puzzle-control-container" class="puzzle-control-container">
-          <button id="stop" data-value="0" data-selected="false" class="button puzzle-state" data-selected="false">Give up</button>
-          <button id="play" data-value="1" data-selected="true" class="button puzzle-state" data-selected="selected">Play</button>
+        <div id="control-container" class="control-container">
+          <input id="stop" name="state" type="radio" value="0" />
+          <label for="stop" class="state">Stop</label>
+          <input id="start" name="state" type="radio" value="1" checked />
+          <label for="start" class="state">Play</label>
         </div>
       </div>
     </div>
   </main>
+  <img src="patterns/0.svg" class="pattern" />
+  <img src="patterns/1.svg" class="pattern" />
+  <img src="patterns/2.svg" class="pattern" />
+  <img src="patterns/3.svg" class="pattern" />
+  <img src="patterns/4.svg" class="pattern" />
+  <img src="patterns/5.svg" class="pattern" />
+  <img src="patterns/6.svg" class="pattern" />
+  <img src="patterns/7.svg" class="pattern" />
+  <img src="patterns/8.svg" class="pattern" />
+  <img src="patterns/9.svg" class="pattern" />
+  <img src="patterns/10.svg" class="pattern" />
+  <img src="patterns/11.svg" class="pattern" />
+  <img src="patterns/12.svg" class="pattern" />
+  <img src="patterns/13.svg" class="pattern" />
+  <img src="patterns/14.svg" class="pattern" />
+  <img src="patterns/15.svg" class="pattern" />
+  <img src="patterns/16.svg" class="pattern" />
+  <img src="patterns/17.svg" class="pattern" />
+  <img src="patterns/18.svg" class="pattern" />
+  <img src="patterns/19.svg" class="pattern" />
+  <img src="patterns/20.svg" class="pattern" />
+  <img src="patterns/21.svg" class="pattern" />
+  <img src="patterns/22.svg" class="pattern" />
+  <img src="patterns/23.svg" class="pattern" />
+  <img src="patterns/24.svg" class="pattern" />
+  <img src="patterns/25.svg" class="pattern" />
+  <img src="patterns/26.svg" class="pattern" />
+  <img src="patterns/27.svg" class="pattern" />
+  <img src="patterns/28.svg" class="pattern" />
+  <img src="patterns/29.svg" class="pattern" />
+  <img src="patterns/30.svg" class="pattern" />
+  <img src="patterns/31.svg" class="pattern" />
+  <img src="patterns/32.svg" class="pattern" />
+  <img src="patterns/33.svg" class="pattern" />
+  <img src="patterns/34.svg" class="pattern" />
+  <img src="patterns/35.svg" class="pattern" />
+  <img src="patterns/36.svg" class="pattern" />
+  <img src="patterns/37.svg" class="pattern" />
+  <img src="patterns/38.svg" class="pattern" />
+  <img src="patterns/39.svg" class="pattern" />
+  <img src="patterns/40.svg" class="pattern" />
+  <img src="patterns/41.svg" class="pattern" />
 </body>
 
 </html>

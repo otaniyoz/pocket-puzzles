@@ -9,19 +9,18 @@
 
 :root {
   --radius: 0;
-  --small-gap: 1vmax;
-  --medium-gap: 1.5vmax;
-  --large-gap: 3vmax;
-  --xlarge-gap: 4vmax;
+  --small-gap: 4px;
+  --medium-gap: 8px;
+  --large-gap: 16px;
   --small-line-height: 0.9em;
   --regular-line-height: 1em;
 
   --black-light: #111;
   --white-light: #fbf8ef;
   --grey-light: hsl(200,5%,95%);
-  --blue-light: hsl(200,65%,65%);
-  --green-light: hsl(150,45%,65%);
-  --orange-light: hsl(25,85%,65%);
+  --blue-light: #63bce5;
+  --green-light: #65D157;
+  --orange-light: #f8a300;
 }
 
 *,
@@ -31,50 +30,99 @@ html {
 html {
   width: 100svw;
   height: 100svh;
+  overflow: hidden;
 }
-.main-container {
+body {
   margin: 0;
   width: 100%;
   display: flex;
   max-height: 100%;
+  height: calc(100% - 2 * var(--large-gap) - 40px);
   flex-flow: column nowrap;
   color: var(--black-light);
-  padding: var(--small-gap);
+  padding: var(--large-gap);
   font-family: "IBM Plex Sans";
   font-weight: 700;
-  font-size: clamp(1rem, 0.8vmax + 0.8rem, 2rem);
+  font-size: clamp(0.5rem, 1vmin + 1rem, 2rem);
   background: var(--white-light);
+  align-items: center;
+  justify-content: flex-start;
 }
-.main {
-  width: 100%;
+main {
+  width: fit-content;
+  height: fit-content;
   margin: 0 auto;
-  max-width: 768px;
 }
-.title {
-  width: 100%;
-  max-height: 7vh;
-  aspect-ratio: 85 / 9;
-  background: url('logos/0.svg');
-  background-repeat: no-repeat;
-  background-size: contain;
-  margin-bottom: var(--small-gap);
-}
-.title-container {
-  padding-left: var(--radius);
-}
-.pocket-puzzles-canvas {
-  width: 100%;
-  max-height: 100%;
+canvas {
   aspect-ratio: 1 / 1;
   border: 1px solid var(--black-light);
   border-radius: var(--radius);
   margin-bottom: var(--medium-gap);
   background: var(--white-light);
 }
-
-.puzzle-title-container,
-.puzzle-level-container,
-.puzzle-control-container {
+#buffer {
+  display: none;
+}
+label {
+  width: 100%;
+  flex: 2 2 100%;
+  min-height: 40px;
+  text-align: center;
+  font-size: inherit;
+  font-weight: inherit;
+  color: var(--black-light);
+  padding: 0 var(--small-gap);
+  height: clamp(32px, 8vh, 64px);
+  background: var(--white-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: var(--radius);
+}
+.pattern,
+input[type="radio"] {
+  display: none;
+  touch-action: none;
+}
+input[type="radio"]:checked+.level {
+  background: var(--blue-light);
+}
+input[type="radio"]:checked+.title {
+  background: var(--orange-light);
+}
+input[type="radio"]:checked+.state {
+  background: var(--green-light);
+}
+.page-title {
+  width: 100%;
+  max-height: 100%;
+  aspect-ratio: 84 / 13;
+  background: url('logos/0.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.page-title-container {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding-left: var(--radius);
+  padding-bottom: var(--small-gap);
+  justify-content: space-between;
+}
+.player > svg {
+  width: 32px; 
+  aspect-ratio: 1 / 1;
+  fill: var(--black-light);
+}
+.buttons {
+  height: fit-content;
+}
+.title-container,
+.level-container,
+.control-container {
   margin: 0;
   border: none;
   display: flex;
@@ -83,42 +131,28 @@ html {
   margin-bottom: var(--medium-gap);
   justify-content: space-between;
 }
-
-.button {
-  color: var(--black-light);
-  flex: 2 2 100%;
-  min-height: 40px;
-  text-align: center;
-  font-size: inherit;
-  font-weight: inherit;
-  width: 100%;
-  padding: 0 var(--small-gap);
-  border-radius: var(--radius);
-  height: clamp(32px, 8vh, 64px);
-  background: var(--white-light);
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--green-light);
-}
-.button:hover {
-  filter: brightness(110%);
-}
-.puzzle-title {
+.title {
   border-color: var(--orange-light);
 }
-.puzzle-level {
+.level {
   border-color: var(--blue-light);
+}
+.state {
+  border-color: var(--green-light);
+}
+
+@media screen and (min-width: 768px) {
+  label:hover {
+    filter: brightness(110%);
+  }
 }
 
 @media screen and (orientation: landscape) {
-  .main-container {
-    padding-top: var(--medium-gap);
-  }
   .puzzle-wrapper {
     display: flex;
     flex-flow: row nowrap;
   }
-  .pocket-puzzles-canvas {
+  canvas {
     margin-right: var(--medium-gap);
   }
 }
