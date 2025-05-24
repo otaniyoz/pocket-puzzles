@@ -268,7 +268,6 @@ window.onload = () => {
   const audioContext = new AudioContext();
   const games = [new SlidePuzzle(), new PairsPuzzle(), new ThatTilePuzzle()];
   const localStorageName = 'pocket-puzzles-settings';
-  const pageTitle = document.getElementById('page-title');
   const canvas = document.getElementById('canvas');
   const buffer = document.getElementById('buffer');
   const context = canvas.getContext('2d', { alpha: 'false', willReadFrequently: 'true' });
@@ -338,14 +337,6 @@ window.onload = () => {
     window.addEventListener('resize', fitScreen);
     buttons.addEventListener('click', handleButtonPress);
     canvas.addEventListener('pointerdown', handleCanvasInteraction);
-    pageTitle.addEventListener('mouseenter', updateDynamicTitle);
-    pageTitle.addEventListener('mouseleave', updateDynamicTitle);
-  }
-
-  function updateDynamicTitle(event) {
-    pageTitle.style.background = `url(logos/${Math.random() * 6 | 0}.svg)`;
-    pageTitle.style.backgroundRepeat = 'no-repeat';
-    pageTitle.style.backgroundSize = 'contain';
   }
 
   function handleButtonPress(event) {
@@ -501,7 +492,7 @@ window.onload = () => {
     let availableSpace;
     const canvasMargin = 8;
     const bodyPadding = 32;
-    const titleContainerHeight = 40;
+    const titleContainerHeight = 40 + 8;
     const bodyDimensions = document.body.getBoundingClientRect();
     const buttonsDimensions = document.getElementById('buttons').getBoundingClientRect();
 
@@ -531,7 +522,6 @@ window.onload = () => {
   init();
   initSounds();
   loadPatterns();
-  updateDynamicTitle();
   addListeners();
   fitScreen();
 
